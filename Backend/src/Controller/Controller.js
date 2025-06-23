@@ -1,0 +1,42 @@
+import { get } from "mongoose";
+import { getshortUrlByCode } from "../Dao/Short_Url.js";
+import { CreateShortUrlWithoutUser } from "../Services/Services.js";
+import wrapAsync from "../Utils/TryCatch.js";
+import { CreateShortUrlWithUser } from "../Services/Services.js";
+import shortUrl from "../models/Model.js";
+
+export const createShortUrl = wrapAsync(async (req, res) => {
+    const data = req.body
+    console.log(data)
+    let shortUrlCode;
+    console.log(req.user, "req.user in createShortUrl");
+    if (req.user) {
+        shortUrlCode = await CreateShortUrlWithUser(data.url, req.user._id, data.Slug)
+    } else {
+        shortUrlCode = await CreateShortUrlWithoutUser(data.url);
+
+    }
+    console.log(data)
+    res.status(200).json({ shortUrl: process.env.APP_URL + shortUrlCode })
+});
+
+
+
+export const redirectfromshorturl = wrapAsync(async (req, res) => {
+    const { id } = req.params
+    const url = await getshortUrlByCode(id);
+    if (url && url.full_url) {
+        res.redirect(url.full_url)
+    } else {
+        res.status(404).send("URL not found");
+    }
+
+})
+
+export const createCustomShortUrl = wrapAsync(async (req, res) => {
+    const { url, Slug } = req.body
+    const shortUrl = await createCustomShortUrlService(url, Slug)
+    res.status(200).json({
+        shortUrl: process.env.APP_URL + shortUrl
+    })
+})
