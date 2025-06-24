@@ -1,4 +1,4 @@
-import { registerUser, loginUser } from "../Services/authentication.service.js";
+import { registerUser, loginUser } from "../Services/authentication.Service.js";
 import wrapAsync from "../Utils/TryCatch.js";
 import { cookieOptions } from "../config/Cookies.js";
 import { signToken } from "../Utils/helper.js";

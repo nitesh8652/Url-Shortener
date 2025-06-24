@@ -6,7 +6,7 @@ import { createUser, findUserByEmail } from '../Dao/User.Dao.js';
 import { ConflictError } from '../Utils/ErrorHandling.js'; // <-- Ensure this is implemented
 import bcrypt from 'bcrypt';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET; 
 
 const signToken = (payload) => {
     return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
