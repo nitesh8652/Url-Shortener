@@ -66,24 +66,24 @@ const UrlHistory = () => {
                 <td className="px-6 py-4 max-w-sm text-sm text-gray-800 dark:text-gray-200 truncate" title={url.full_url}>
                   {url.full_url}
                 </td>
-                {/* <td className="px-6 py-4 max-w-sm text-sm text-blue-600 dark:text-blue-400 truncate"
-                 title={`http://localhost:3000/${url.short_url}`}>
-                  <a href={`http://localhost:3000/${url.short_url}`} target="_blank" rel="noopener noreferrer">
+                <td className="px-6 py-4 max-w-sm text-sm text-blue-600 dark:text-blue-400 truncate"
+                 title={`https://url-shortener-z9f3.onrender.com/${url.short_url}`}>
+                 <a href={`https://url-shortener-z9f3.onrender.com/${url.short_url}`} target="_blank" rel="noopener noreferrer">
                     {`/${url.short_url}`}
                   </a>
+                </td>
+                {/* <td
+                  className="px-6 py-4 max-w-sm text-sm text-blue-600 dark:text-blue-400 truncate"
+                  title={`${import.meta.env.VITE_API_URL}/${url.short_url}`}
+                >
+                  <a
+                    href={`${import.meta.env.VITE_API_URL}/${url.short_url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    /{url.short_url}
+                  </a>
                 </td> */}
-                 <td
-  className="px-6 py-4 max-w-sm text-sm text-blue-600 dark:text-blue-400 truncate"
-  title={`${import.meta.env.VITE_API_URL}/${url.short_url}`}
->
-  <a
-    href={`${import.meta.env.VITE_API_URL}/${url.short_url}`}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    /{url.short_url}
-  </a>
-</td>
                 <td className="px-6 py-4 text-center">
                   <span className="inline-block bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-medium">
                     {url.clicks}
@@ -91,12 +91,12 @@ const UrlHistory = () => {
                 </td>
                 <td className="px-6 py-4 text-center">
                   <button
-                    onClick={() => copyToClipboard(`https://url-shortener-hkze.onrender.com/${url.short_url}`, url._id)}
-                    className={`inline-flex items-center px-4 py-2 text-xs font-medium rounded-full shadow-sm transition ${
-                      copiedId === url._id
+                   onClick={() => copyToClipboard(`https://url-shortener-z9f3.onrender.com/${url.short_url}`, url._id)}
+
+                    className={`inline-flex items-center px-4 py-2 text-xs font-medium rounded-full shadow-sm transition ${copiedId === url._id
                         ? 'bg-green-500 text-white'
                         : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
+                      }`}
                   >
                     <ClipboardCopy className="w-4 h-4 mr-2" />
                     {copiedId === url._id ? 'Copied!' : 'Copy'}
