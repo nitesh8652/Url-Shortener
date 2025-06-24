@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import User from '../Models/UserModel.js';
+import User from '../models/UserModel.js';
 import jwt from 'jsonwebtoken';
 import { createUser, findUserByEmail } from '../Dao/User.Dao.js';
 import { ConflictError } from '../Utils/ErrorHandling.js'; // <-- Ensure this is implemented
