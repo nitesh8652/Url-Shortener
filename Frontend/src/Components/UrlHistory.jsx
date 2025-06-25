@@ -67,11 +67,18 @@ const UrlHistory = () => {
                   {url.full_url}
                 </td>
                 <td className="px-6 py-4 max-w-sm text-sm text-blue-600 dark:text-blue-400 truncate"
-                 title={`https://url-shortener-z9f3.onrender.com/${url.short_url}`}>
-                 <a href={`https://url-shortener-z9f3.onrender.com/${url.short_url}`} target="_blank" rel="noopener noreferrer">
+               title={`${import.meta.env.VITE_API_URL}/${url.short_url}`}>
+                 <a  href={`${import.meta.env.VITE_API_URL}/${url.short_url}`} target="_blank" rel="noopener noreferrer">
                     {`/${url.short_url}`}
                   </a>
                 </td>
+
+{/* title={`https://url-shortener-z9f3.onrender.com/${url.short_url}`}
+<a href={`https://url-shortener-z9f3.onrender.com/${url.short_url}`} target="_blank" rel="noopener noreferrer">
+  {`/${url.short_url}`}
+</a> */}
+
+
                 {/* <td
                   className="px-6 py-4 max-w-sm text-sm text-blue-600 dark:text-blue-400 truncate"
                   title={`${import.meta.env.VITE_API_URL}/${url.short_url}`}
@@ -91,7 +98,7 @@ const UrlHistory = () => {
                 </td>
                 <td className="px-6 py-4 text-center">
                   <button
-                   onClick={() => copyToClipboard(`https://url-shortener-z9f3.onrender.com/${url.short_url}`, url._id)}
+                   onClick={() =>  copyToClipboard(`${import.meta.env.VITE_API_URL}/${url.short_url}`, url._id)}
 
                     className={`inline-flex items-center px-4 py-2 text-xs font-medium rounded-full shadow-sm transition ${copiedId === url._id
                         ? 'bg-green-500 text-white'
