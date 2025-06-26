@@ -20,10 +20,10 @@ export const checkAuthStatus = async () => {
     return data;
 };
 
-export const getOrigin = async () => {
-    const {data} = await axiosInstance.get("/api/authentication/origin");
-    return data;
-};
+// export const getOrigin = async () => {
+//     const {data} = await axiosInstance.get("/api/authentication/origin");
+//     return data;
+// };
 
 export const getallurl = async () => {
     const {data} = await axiosInstance.get("/api/user/history");
