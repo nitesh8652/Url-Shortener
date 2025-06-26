@@ -21,7 +21,8 @@ const app = express();
 // app.use(cors())
 
 app.use(cors({
-    origin:'https://url-shortener-frontend-ving.onrender.com',
+    // origin:'https://url-shortener-frontend-ving.onrender.com',
+    origin:'process.env.APP_URL',
     credentials: true,
        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -47,6 +48,6 @@ app.use(errorHandler)
 
 app.listen(3000, () => {
     connectDB();
-    console.log("Server is running on port http://localhost:3000/api/create");
+    console.log(`Server is running on port ${PORT}`);
 });
 
