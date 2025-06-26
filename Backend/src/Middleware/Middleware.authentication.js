@@ -1,15 +1,15 @@
-// import { verifyToken } from "../Utils/helper.js";
+import { verifyToken } from "../Utils/helper.js";
 import { findUserById } from "../Dao/User.Dao.js";
 import jsonwebtoken from 'jsonwebtoken';
 
 
-export const verifyToken = (token) => {
+// export const verifyToken = (token) => {
 
-    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET, );
-    console.log(decoded.id)
-    console.log(decoded.id)
-        return decoded.id
-    }
+//     const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET, );
+//     console.log(decoded.id)
+//     console.log(decoded.id)
+//         return decoded.id
+//     }
 
 
 export const authMiddleware = async (req, res, next) => {
