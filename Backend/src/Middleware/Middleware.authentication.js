@@ -1,5 +1,14 @@
 import { verifyToken } from "../Utils/helper.js";
 import { findUserById } from "../Dao/User.Dao.js";
+import jsonwebtoken from 'jsonwebtoken';
+
+export const verifyToken = (token) => {
+
+    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET, );
+    console.log(decoded.id)
+        return decoded.id
+    }
+
 
 export const authMiddleware = async (req, res, next) => {
     // Check for token in cookies or Authorization header
@@ -19,6 +28,8 @@ export const authMiddleware = async (req, res, next) => {
         console.log('Token decoded:', decoded);
         
         const user = await findUserById(decoded);
+
+        
         
         if (!user) {
             return res.status(401).json({ message: "User not found, please login again" });
@@ -33,3 +44,4 @@ export const authMiddleware = async (req, res, next) => {
         return res.status(401).json({ message: "Invalid token, please login again" });
     }
 };
+
