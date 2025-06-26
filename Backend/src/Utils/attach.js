@@ -1,4 +1,4 @@
-import { verifyToken } from "./helper.js";
+import { verifyToken } from "../Middleware/Middleware.authentication.js";
 import { findUserById } from "../Dao/User.Dao.js";  
 
 export const attach = async (req, res, next) => {

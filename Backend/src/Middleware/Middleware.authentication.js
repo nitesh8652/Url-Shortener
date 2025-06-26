@@ -1,6 +1,7 @@
-import { verifyToken } from "../Utils/helper.js";
+// import { verifyToken } from "../Utils/helper.js";
 import { findUserById } from "../Dao/User.Dao.js";
 import jsonwebtoken from 'jsonwebtoken';
+
 
 export const verifyToken = (token) => {
 
@@ -24,7 +25,7 @@ export const authMiddleware = async (req, res, next) => {
     }
     
     try {
-        const decoded = verifyToken(token);
+        const decoded = DverifyToken(token);
         console.log('Token decoded:', decoded);
         
         const user = await findUserById(decoded);
