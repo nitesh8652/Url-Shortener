@@ -7,6 +7,7 @@ export const verifyToken = (token) => {
 
     const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET, );
     console.log(decoded.id)
+    console.log(decoded.id)
         return decoded.id
     }
 
