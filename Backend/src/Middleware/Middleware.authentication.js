@@ -20,6 +20,8 @@ export const authMiddleware = async (req, res, next) => {
     
     console.log('Cookies received:', req.cookies);
     console.log('Token found:', token);
+    console.log("Headers:", req.headers);
+console.log("Cookies:", req.cookies);
     
     if (!token) {
         return res.status(401).json({ message: "Unauthorized access, please login first" });
