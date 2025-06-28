@@ -76,7 +76,7 @@ const Form = () => {
         </div>
       )}
 
-      <form onSubmit={handlesubmit}>
+      <div onSubmit={handlesubmit}>
         <div className="mb-4">
           <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-1">
             Enter your long URL
@@ -84,15 +84,21 @@ const Form = () => {
           <input
             type="url"
             id="url"
-            // value={url}
-            value={shortUrl}
+            value={url}
+
+            // value={shortUrl}
           
             onChange={(e) => setvalue(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="https://example.com"
             required
           />
+        console.log("url",url)
+        console.log(short_url,"short_url")
         </div>
+
+        console.log("url",url)
+        console.log(short_url,"short_url")
 
         {/* Conditionally show custom URL input */}
         {isAuthenticated && (
