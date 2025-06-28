@@ -48,10 +48,8 @@ const Form = () => {
       const code = await Fetchapi(payload);
 
       // Build the full redirect URL
-      // const fullRedirect = `https://url-shortener-z9f3.onrender.com/${code}`;
-    //  setshortUrl(fullRedirect);
-    const fullRedirect = `https://url-shortener-z9f3.onrender.com/${code}`;
-    setshortUrl(code);
+      const fullRedirect = `https://url-shortener-z9f3.onrender.com/${code}`;
+     setshortUrl(fullRedirect);
       //       const data = isAuthenticated ? { url, Slug: customSlug } : { url };
       //       const Shortingurl = await Fetchapi(data);
       //       setshortUrl(`https://url-shortener-z9f3.onrender.com/${Shortingurl.short_url}`);
