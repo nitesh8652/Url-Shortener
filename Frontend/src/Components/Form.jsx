@@ -154,7 +154,7 @@ const Form = () => {
             </div>
           </div>
         )}
-      </form>
+      </div>
     </>
   );
 };
