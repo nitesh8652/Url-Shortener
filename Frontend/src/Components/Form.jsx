@@ -16,6 +16,9 @@ const Form = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // for loading spinner
 
+       console.log("url",url)
+console.log(shortUrl,"shortUrl")
+
   // Auth check on mount
   useEffect(() => {
     const checkAuth = async () => {
@@ -93,12 +96,10 @@ const Form = () => {
             placeholder="https://example.com"
             required
           />
-        console.log("url",url)
-        console.log(short_url,"short_url")
+      
         </div>
 
-        console.log("url",url)
-        console.log(short_url,"short_url")
+ 
 
         {/* Conditionally show custom URL input */}
         {isAuthenticated && (
