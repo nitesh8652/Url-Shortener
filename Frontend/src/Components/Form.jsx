@@ -16,8 +16,8 @@ const Form = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // for loading spinner
 
-       console.log("url",url)
-console.log(shortUrl,"shortUrl")
+  console.log("url", url)
+  console.log(shortUrl, "shortUrl")
 
   // Auth check on mount
   useEffect(() => {
@@ -40,15 +40,23 @@ console.log(shortUrl,"shortUrl")
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = isAuthenticated ? { url, Slug: customSlug } : { url };
-      const Shortingurl = await Fetchapi(data);
-      // setshortUrl(Shortingurl);
-      setshortUrl(`https://url-shortener-z9f3.onrender.com/${Shortingurl.short_url}`);
 
-      queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
-console.log(Shortingurl,"Shortingurl")
+      const payload = isAuthenticated
+        ? { url, Slug: customSlug }
+        : { url }
+     
+        const code = await Fetchapi(payload)
+        setshortUrl(`https://url-shortener-z9f3.onrender.com/${code}`);
 
-    } catch (err) {
+      //       const data = isAuthenticated ? { url, Slug: customSlug } : { url };
+      //       const Shortingurl = await Fetchapi(data);
+      //       setshortUrl(`https://url-shortener-z9f3.onrender.com/${Shortingurl.short_url}`);
+      //       queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
+      // console.log(Shortingurl,"Shortingurl")
+      
+            queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
+    
+          } catch (err) {
       setError(err.message);
     }
   };
@@ -90,16 +98,16 @@ console.log(Shortingurl,"Shortingurl")
             value={url}
 
             // value={shortUrl}
-          
+
             onChange={(e) => setvalue(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="https://example.com"
             required
           />
-      
+
         </div>
 
- 
+
 
         {/* Conditionally show custom URL input */}
         {isAuthenticated && (
