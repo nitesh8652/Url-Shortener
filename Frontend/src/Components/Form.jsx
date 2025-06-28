@@ -45,8 +45,16 @@ const Form = () => {
         ? { url, Slug: customSlug }
         : { url }
      
-        const code = await Fetchapi(payload)
-        setshortUrl(`https://url-shortener-z9f3.onrender.com/${code}`);
+         const result = await Fetchapi(payload);
+    console.log("API returned:", result);
+
+    // If it already looks like a URL, use it directly:
+    if (result.startsWith("http")) {
+      setshortUrl(result);
+    } else {
+      // Otherwise treat it as just the code:
+      setshortUrl(`https://url-shortener-z9f3.onrender.com/${result}`);
+    }
 
       //       const data = isAuthenticated ? { url, Slug: customSlug } : { url };
       //       const Shortingurl = await Fetchapi(data);
