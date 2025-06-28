@@ -76,7 +76,7 @@ const Form = () => {
         </div>
       )}
 
-      <div onSubmit={handlesubmit}>
+      <form onSubmit={handlesubmit}>
         <div className="mb-4">
           <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-1">
             Enter your long URL
@@ -154,7 +154,7 @@ const Form = () => {
             </div>
           </div>
         )}
-      </div>
+      </form>
     </>
   );
 };
