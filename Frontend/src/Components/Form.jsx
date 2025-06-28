@@ -39,7 +39,9 @@ const Form = () => {
     try {
       const data = isAuthenticated ? { url, Slug: customSlug } : { url };
       const Shortingurl = await Fetchapi(data);
-      setshortUrl(Shortingurl);
+      // setshortUrl(Shortingurl);
+      setshortUrl(`https://url-shortener-z9f3.onrender.com/${Shortingurl.short_url}`);
+
       queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
 
 
@@ -82,7 +84,9 @@ const Form = () => {
           <input
             type="url"
             id="url"
-            value={url}
+            // value={url}
+            value={shortUrl}
+          
             onChange={(e) => setvalue(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="https://example.com"
