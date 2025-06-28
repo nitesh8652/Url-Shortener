@@ -60,17 +60,19 @@ const UrlHistory = () => {
               <th className="px-6 py-3 text-center text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">Copy</th>
             </tr>
           </thead>
+
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {reversedUrls.map((url) => (
               <tr key={url._id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                 <td className="px-6 py-4 max-w-sm text-sm text-gray-800 dark:text-gray-200 truncate" title={url.full_url}>
                   {url.full_url}
                 </td>
+          
                 <td className="px-6 py-4 max-w-sm text-sm text-blue-600 dark:text-blue-400 truncate"
-               title={`${import.meta.env.VITE_API_URL}/${url.short_url}`}>
-                 <a  href={`${import.meta.env.VITE_API_URL}/${url.short_url}`} target="_blank" rel="noopener noreferrer">
-                    {`/${url.short_url}`}
-                  </a>
+              title={`https://url-shortener-z9f3.onrender.com/${url.short_url}`}>
+                 <a href={`https://url-shortener-z9f3.onrender.com/${url.short_url}`} target="_blank" rel="noopener noreferrer">
+    {`https://url-shortener-z9f3.onrender.com/${url.short_url}`}
+  </a>
                 </td>
 
 {/* title={`https://url-shortener-z9f3.onrender.com/${url.short_url}`}
@@ -98,7 +100,8 @@ const UrlHistory = () => {
                 </td>
                 <td className="px-6 py-4 text-center">
                   <button
-                   onClick={() =>  copyToClipboard(`${import.meta.env.VITE_API_URL}/${url.short_url}`, url._id)}
+                   onClick={() => copyToClipboard(`https://url-shortener-z9f3.onrender.com/${url.short_url}`, url._id)}
+
 
                     className={`inline-flex items-center px-4 py-2 text-xs font-medium rounded-full shadow-sm transition ${copiedId === url._id
                         ? 'bg-green-500 text-white'
