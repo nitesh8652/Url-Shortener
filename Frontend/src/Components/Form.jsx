@@ -44,27 +44,21 @@ const Form = () => {
       const payload = isAuthenticated
         ? { url, Slug: customSlug }
         : { url }
-     
-         const result = await Fetchapi(payload);
-    console.log("API returned:", result);
 
-    // If it already looks like a URL, use it directly:
-    if (result.startsWith("http")) {
-      setshortUrl(result);
-    } else {
-      // Otherwise treat it as just the code:
-      setshortUrl(`https://url-shortener-z9f3.onrender.com/${result}`);
-    }
+      const code = await Fetchapi(payload);
 
+      // Build the full redirect URL
+      const fullRedirect = `https://url-shortener-z9f3.onrender.com/${code}`;
+     setshortUrl(fullRedirect);
       //       const data = isAuthenticated ? { url, Slug: customSlug } : { url };
       //       const Shortingurl = await Fetchapi(data);
       //       setshortUrl(`https://url-shortener-z9f3.onrender.com/${Shortingurl.short_url}`);
       //       queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
       // console.log(Shortingurl,"Shortingurl")
-      
-            queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
-    
-          } catch (err) {
+
+      queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
+
+    } catch (err) {
       setError(err.message);
     }
   };
