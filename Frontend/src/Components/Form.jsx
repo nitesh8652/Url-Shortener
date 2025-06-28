@@ -46,7 +46,7 @@ console.log(shortUrl,"shortUrl")
       setshortUrl(`https://url-shortener-z9f3.onrender.com/${Shortingurl.short_url}`);
 
       queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
-
+console.log(Shortingurl,"Shortingurl")
 
     } catch (err) {
       setError(err.message);
