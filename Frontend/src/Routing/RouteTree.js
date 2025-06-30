@@ -3,6 +3,7 @@ import { createRootRoute } from "@tanstack/react-router";
 import {HomingRoute} from "./Homing"
 import {AuthRoute} from "./AuthRoute.js"
 import {DashboardRoute} from "./Dashboard"
+import {QrGenerator} from "./Qr.js"
 
 
 
@@ -12,12 +13,10 @@ export const rootRoute = createRootRoute({
 
  
 
-//  rootRoute.addChildern([indexRoute, aboutRoute])
-
-
 export const routeTree = rootRoute.addChildren([
   HomingRoute,
   AuthRoute,
-  DashboardRoute
+  DashboardRoute,
+  QrGenerator
 ]);
 
