@@ -67,7 +67,7 @@ const QrPage = () => {
                         <p className="mt-4 text-sm text-gray-600 break-all">{qrValue}</p>
 
   <button
-            onClick={handleDownload}
+            onClick={handledownload}
             className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           >
             Download QR
