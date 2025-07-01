@@ -65,7 +65,7 @@ const QrPage = () => {
 
 
                 {qrValue && (
-                    <div className="mt-8 flex flex-col items-center">
+                    <div ref={svgContainerRef} className="mt-8 flex flex-col items-center">
                         <QRCode value={qrValue} />
                         <p className="mt-4 text-sm text-gray-600 break-all">{qrValue}</p>
 
