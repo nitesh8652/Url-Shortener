@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { loginUser } from '../Api/UserApi';
 import { LogIn } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
-import {useNavigate} from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { login } from '../Store/Slice/AuthSlice.js';
 
 
-const MinimalLogin = ({state}) => {
+const MinimalLogin = ({ state }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,7 +17,7 @@ const MinimalLogin = ({state}) => {
   const dispatch = useDispatch();
   console.log(auth);
 
-  const validateEmail = (email) =>{
+  const validateEmail = (email) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   }
@@ -27,7 +27,7 @@ const MinimalLogin = ({state}) => {
     setError('');
     setIsLoading(true);
 
-    if (!validateEmail(email)){
+    if (!validateEmail(email)) {
       setError('Please enter a valid email address.');
       setIsLoading(false);
       return;
@@ -36,14 +36,14 @@ const MinimalLogin = ({state}) => {
 
       const data = await loginUser(email, password);
       setIsLoading(false);
-      console.log("login successful",data);
-      
+      console.log("login successful", data);
+
       dispatch({
         type: 'auth/login',
-        payload: data.user || {email}
+        payload: data.user || { email }
       });
-      
-      navigate({to:"/dashboard"})
+
+      navigate({ to: "/dashboard" })
 
     } catch (err) {
       setIsLoading(false);
@@ -66,7 +66,7 @@ const MinimalLogin = ({state}) => {
         </div>
       )}
 
-      <div onSubmit={handleSubmit} className="w-full space-y-4 flex flex-col items-center">
+      <form onSubmit={handleSubmit} className="w-full space-y-4 flex flex-col items-center">
 
         <div className="container  flex flex-col items-center gap-6 w-[80%]">
           <input
@@ -97,12 +97,12 @@ const MinimalLogin = ({state}) => {
           </button>
         </div>
 
-       <div className="mt-4 text-center text-sm text-gray-600 ">
+        <div className="mt-4 text-center text-sm text-gray-600 ">
           Don't have an account?
           <span onClick={() => state(false)} className="text-blue-500  hover:text-blue-700 cursor-pointer">Register</span>
         </div>
 
-      </div>
+      </form>
 
 
     </div>
