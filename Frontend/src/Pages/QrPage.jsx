@@ -11,6 +11,29 @@ const QrPage = () => {
         setQrValue(inputurl)
     }
 
+    const handledownload = () => {
+        if (!svgContainerREf.current) return
+
+        const svg = svgContainerRef.current.querySelector('svg')
+        if (!svg) return
+
+        const serializer = new XMLSerializer()
+        const svgString = serializer.serializeToString(svg)
+
+        const blob = new Blob([svgString], { type: 'image/svg+xml' })
+        const url = URL.createObjectUrl(blob)
+
+
+        const link = document.createElement('a')
+        link.href = url;
+        link.download = 'qrcode.svg';
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+
+        URL.revokeObjectURL(url)
+    }
+
     return (
 
         <>
@@ -42,6 +65,14 @@ const QrPage = () => {
                     <div className="mt-8 flex flex-col items-center">
                         <QRCode value={qrValue} />
                         <p className="mt-4 text-sm text-gray-600 break-all">{qrValue}</p>
+
+  <button
+            onClick={handleDownload}
+            className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Download QR
+          </button>
+
                     </div>
                 )}
 
