@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import {QRCode} from 'qrcode.react';
+import QRCode from 'react-qr-code';
 
 const QrPage = () => {
     const [inputurl, setInputurl] = useState('');
@@ -40,7 +40,7 @@ const QrPage = () => {
 
                 {qrValue && (
                     <div className="mt-8 flex flex-col items-center">
-                        <QRCode value={qrValue} size={256} />
+                        <QRCode value={qrValue} />
                         <p className="mt-4 text-sm text-gray-600 break-all">{qrValue}</p>
                     </div>
                 )}

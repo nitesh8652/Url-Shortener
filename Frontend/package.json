@@ -17,9 +17,9 @@
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "lucide-react": "^0.515.0",
-    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-qr-code": "^2.0.16",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1"
   },
