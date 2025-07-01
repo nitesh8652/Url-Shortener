@@ -23,7 +23,8 @@ const MinimalLogin = ({ state }) => {
   }
 
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+     e.preventDefault()
     setError('');
     setIsLoading(true);
 
