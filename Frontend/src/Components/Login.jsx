@@ -29,9 +29,9 @@ const MinimalLogin = ({state}) => {
 
     if (!validateEmail(email)){
       setError('Please enter a valid email address.');
+      setIsLoading(false);
       return;
     }
-  setIsLoading(true);
     try {
 
       const data = await loginUser(email, password);
