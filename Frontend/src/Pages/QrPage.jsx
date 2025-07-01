@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react";
+import QrCode from "qrcode.react";
 
 const QrPage = () => {
     const [inputurl, setInputurl] = useState('');
