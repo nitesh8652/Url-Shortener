@@ -1,10 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import QRCode from 'react-qr-code';
+import { useRef } from "react";
 
 const QrPage = () => {
     const [inputurl, setInputurl] = useState('');
     const [qrValue, setQrValue] = useState('');
+    const svgContainerRef = useRef(null)
 
     const handleGenerate = (e) => {
         e.preventDefault()
@@ -12,7 +14,7 @@ const QrPage = () => {
     }
 
     const handledownload = () => {
-        if (!svgContainerREf.current) return
+        if (!svgContainerRef.current) return
 
         const svg = svgContainerRef.current.querySelector('svg')
         if (!svg) return
