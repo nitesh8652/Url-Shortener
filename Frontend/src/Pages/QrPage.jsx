@@ -23,7 +23,7 @@ const QrPage = () => {
         const svgString = serializer.serializeToString(svg)
 
         const blob = new Blob([svgString], { type: 'image/svg+xml' })
-        const url = URL.createObjectUrl(blob)
+        const url = URL.createObjectURL(blob)
 
 
         const link = document.createElement('a')
@@ -34,6 +34,7 @@ const QrPage = () => {
         link.remove()
 
         URL.revokeObjectURL(url)
+      
     }
 
     return (
@@ -71,8 +72,10 @@ const QrPage = () => {
   <button
             onClick={handledownload}
             className="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            
           >
             Download QR
+            
           </button>
 
                     </div>
