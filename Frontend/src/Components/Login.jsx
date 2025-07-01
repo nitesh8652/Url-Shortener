@@ -17,11 +17,23 @@ const MinimalLogin = ({state}) => {
   const dispatch = useDispatch();
   console.log(auth);
 
+  const validateEmail = (email) =>{
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  }
+
+
   const handleSubmit = async () => {
     setError('');
     setIsLoading(true);
 
+    if (!validateEmail(email)){
+      setError('Please enter a valid email address.');
+      return;
+    }
+  setIsLoading(true);
     try {
+
       const data = await loginUser(email, password);
       setIsLoading(false);
       console.log("login successful",data);
