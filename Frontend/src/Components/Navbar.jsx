@@ -59,7 +59,7 @@ const handleLogout = async () => {
                         onClick={handleLogout}
                         className="flex items-center gap-1 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
                     >
-                        <LogOut size={18} />
+                        <Logout size={18} />
                         <span>Logout</span>
                     </button>
                 )}
