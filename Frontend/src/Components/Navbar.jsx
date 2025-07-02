@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { LogIn } from 'lucide-react';
-
+import {auth} from '../Store/Slice/AuthSlice.js'
 
 
 const Navbar = () => {
