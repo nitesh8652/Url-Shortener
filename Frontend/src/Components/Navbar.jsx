@@ -12,7 +12,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-const handlelogout = async () => {
+const handleLogout = async () => {
     try{
         await LogoutUser();
     } catch (err){
