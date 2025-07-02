@@ -1,7 +1,8 @@
 import React from 'react';
+import { logout } from '../Store/Slice/AuthSlice';
+import { LogoutUser } from '../Api/UserApi';
 import { Link } from '@tanstack/react-router';
 import { LogIn, LogOut } from 'lucide-react';
-import {auth} from '../Store/Slice/AuthSlice.js'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
