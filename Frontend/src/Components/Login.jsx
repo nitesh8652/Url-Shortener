@@ -47,7 +47,7 @@ const MinimalLogin = ({ state }) => {
       console.warn('Server‑side logout failed, clearing client only');
     } finally {
       dispatch(logout())
-      setIsLoading(false)
+      
       navigate({to:'/'})
     }
   }
