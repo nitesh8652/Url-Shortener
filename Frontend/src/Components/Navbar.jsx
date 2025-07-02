@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@tanstack/react-router';
-import { LogIn } from 'lucide-react';
+import { LogIn, LogOut } from 'lucide-react';
 import {auth} from '../Store/Slice/AuthSlice.js'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -59,7 +59,7 @@ const handleLogout = async () => {
                         onClick={handleLogout}
                         className="flex items-center gap-1 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
                     >
-                        <Logout size={18} />
+                        <LogOut size={18} />
                         <span>Logout</span>
                     </button>
                 )}
