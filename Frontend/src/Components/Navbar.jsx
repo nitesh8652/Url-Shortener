@@ -15,17 +15,38 @@ const Navbar = () => {
 
 
 
-                <div className="loginbutt bg-blue-500 px-[7px] py-[7px] rounded-[7px] hover:bg-blue-300  hover:text-blue-600">
+                {/* <div className="loginbutt bg-blue-500 px-[7px] py-[7px] rounded-[7px] hover:bg-blue-300  hover:text-blue-600"> */}
 
-                    {/* Right side - Login button */}
-                    <Link
+                {/* Right side - Login button */}
+                {/* <Link
                         to="/loginpage"
                         className="flex items-center gap-1 text-[14px] text-white hover:text-blue-600 transition-colors"
                     >
                         <LogIn size={18} />
                         <span>Login</span>
-                    </Link>
-                </div >
+                    </Link> */}
+
+                {!auth.user ? (
+                    <div className="loginbutt bg-blue-500 px-[7px] py-[7px] rounded-[7px] hover:bg-blue-300 hover:text-blue-600">
+                        <Link
+                            to="/loginpage"
+                            className="flex items-center gap-1 text-[14px] text-white hover:text-blue-600 transition-colors"
+                        >
+                            <LogIn size={18} />
+                            <span>Login</span>
+                        </Link>
+                    </div>
+                    ) : (
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-1 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                    >
+                        <LogOut size={18} />
+                        <span>Logout</span>
+                    </button>
+                )}
+
+                {/* // </div > */}
 
                 <Link
                     to="/qrgenerate"
