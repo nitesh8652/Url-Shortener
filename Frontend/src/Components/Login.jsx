@@ -3,7 +3,7 @@ import { loginUser,LogoutUser } from '../Api/UserApi';
 import { LogIn } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
-
+import { login, logout } from '../Store/Slice/AuthSlice.js';
 
 
 const MinimalLogin = ({ state }) => {
@@ -52,7 +52,7 @@ const MinimalLogin = ({ state }) => {
     }
   }
 
-  if(auth.user) {
+  if(auth.user && auth.isAuthenticated) {
     return (
       <div className="w-full flex flex-col items-center gap-3 p-6">
         <LogIn size={28} className="text-blue-500" />
