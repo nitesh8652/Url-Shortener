@@ -3,7 +3,7 @@ import { loginUser } from '../Api/UserApi';
 import { LogIn } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
-import { login } from '../Store/Slice/AuthSlice.js';
+import { login, logout } from '../Store/Slice/AuthSlice.js';
 
 const MinimalLogin = ({ state }) => {
   const [email, setEmail]       = useState('');
@@ -35,6 +35,29 @@ const MinimalLogin = ({ state }) => {
       setIsLoading(false);
     }
   };
+
+  const handleLogout = async () =>{
+    setIsLoading(true)
+    try{
+      await LogoutUser()
+    } catch (err){
+      console.warn('Server‑side logout failed, clearing client only');
+    } finally {
+      dispatch(logout())
+      setIsLoading(false)
+      navigate({to:'/'})
+    }
+  }
+
+  if(auth.user && auth.isAuthenticated) {
+    return (
+      <div className="w-full flex flex-col items-center gap-3 p-6">
+        <LogIn size={28} className="text-blue-500" />
+        <h1 className="text-xl font-semibold">Login</h1>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col items-center gap-3 p-6">
