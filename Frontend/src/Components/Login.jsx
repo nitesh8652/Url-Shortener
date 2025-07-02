@@ -9,10 +9,10 @@ import { login, logout } from '../Store/Slice/AuthSlice.js';
 const MinimalLogin = ({ state }) => {
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const auth = useSelector((state) => state.auth);
   const [error, setError]       = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const auth = useSelector((state) => state.auth);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
