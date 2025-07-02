@@ -2,9 +2,27 @@ import React from 'react';
 import { Link } from '@tanstack/react-router';
 import { LogIn } from 'lucide-react';
 import {auth} from '../Store/Slice/AuthSlice.js'
-
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from '@tanstack/react-router';
 
 const Navbar = () => {
+
+    const auth = useSelector((state) => state.auth)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+const handlelogout = async () => {
+    try{
+        await LogoutUser();
+    } catch (err){
+        console.warn('Server-side logout failed, clearing client only');
+    } finally {
+        dispatch(logout());
+        navigate({to:'/'})
+    }
+}
+
     return (
         <nav className="bg-white shadow-sm py-3 px-4">
             <div className="container mx-auto flex justify-between items-center">
