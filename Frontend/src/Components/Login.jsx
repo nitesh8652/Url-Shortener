@@ -4,6 +4,7 @@ import { LogIn } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
 import { login, logout } from '../Store/Slice/AuthSlice.js';
+import auth from '../Store/Slice/AuthSlice.js';
 
 const MinimalLogin = ({ state }) => {
   const [email, setEmail]       = useState('');
