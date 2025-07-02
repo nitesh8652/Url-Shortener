@@ -1,32 +1,36 @@
 import React, { useState } from 'react';
-import { loginUser, LogoutUser } from '../Api/UserApi';
-import { LogIn, LogOut } from 'lucide-react';
+import { loginUser,LogoutUser } from '../Api/UserApi';
+import { LogIn } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
-import { login, logout } from '../Store/Slice/AuthSlice.js';
+
+
 
 const MinimalLogin = ({ state }) => {
-  const [email, setEmail]         = useState('');
-  const [password, setPassword]   = useState('');
-  const [error, setError]         = useState('');
+  const [email, setEmail]       = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError]       = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const navigate  = useNavigate();
-  const dispatch  = useDispatch();
-  const auth       = useSelector(s => s.auth);
+  const auth = useSelector((state) => state.auth);
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const validateEmail = (e) =>
-    /^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(e);
+  const validateEmail = (email) =>
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 
-  const handleLogin = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     if (!validateEmail(email)) {
-      return setError('Please enter a valid email address.');
+      setError('Please enter a valid email address.');
+      return;
     }
+
     setIsLoading(true);
     try {
-      const { user } = await loginUser(email, password);
-      dispatch(login(user));
+      const data = await loginUser(email, password);
+      dispatch({ type: 'auth/login', payload: data.user });
       navigate({ to: '/dashboard' });
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
@@ -35,37 +39,29 @@ const MinimalLogin = ({ state }) => {
     }
   };
 
-  const handleLogout = async () => {
-    setIsLoading(true);
-    try {
-      await logoutUser(); // optional API call
-    } catch {
-      // swallow
+  const handleLogout = async () =>{
+    setIsLoading(true)
+    try{
+      await LogoutUser()
+    } catch (err){
+      console.warn('Server‑side logout failed, clearing client only');
     } finally {
-      dispatch(logout());
-      setIsLoading(false);
-      navigate({ to: '/loginpage' });
+      dispatch(logout())
+      
+      navigate({to:'/'})
     }
-  };
+  }
 
-  // if logged in, show logout
-  if (auth.user) {
+  if(auth.user) {
     return (
       <div className="w-full flex flex-col items-center gap-3 p-6">
-        <LogOut size={28} className="text-red-500" />
-        <h1 className="text-xl font-semibold">Welcome, {auth.user.email}</h1>
-        <button
-          onClick={handleLogout}
-          disabled={isLoading}
-          className="mt-4 w-[80%] py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
-        >
-          {isLoading ? 'Logging out…' : 'Log out'}
-        </button>
+        <LogIn size={28} className="text-blue-500" />
+        <h1 className="text-xl font-semibold">Login</h1>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     );
   }
 
-  // otherwise show login form
   return (
     <div className="w-full flex flex-col items-center gap-3 p-6">
       <LogIn size={28} className="text-blue-500" />
@@ -77,13 +73,13 @@ const MinimalLogin = ({ state }) => {
         </div>
       )}
 
-      <form onSubmit={handleLogin} className="w-[80%] flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="w-[80%] flex flex-col gap-4">
         <input
           type="email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
-          pattern="[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
-          className="w-full h-10 px-3 border rounded focus:ring-2 focus:ring-blue-500"
+          onChange={(e) => setEmail(e.target.value)}
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$"
+          className="w-full h-10 px-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Email"
           required
         />
@@ -91,8 +87,8 @@ const MinimalLogin = ({ state }) => {
         <input
           type="password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
-          className="w-full h-10 px-3 border rounded focus:ring-2 focus:ring-blue-500"
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full h-10 px-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Password"
           required
         />
@@ -100,7 +96,7 @@ const MinimalLogin = ({ state }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+          className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition disabled:opacity-50"
         >
           {isLoading ? 'Logging in…' : 'Log in'}
         </button>
