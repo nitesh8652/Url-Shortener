@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loginUser, logoutUser } from '../Api/UserApi';
+import { loginUser, LogoutUser } from '../Api/UserApi';
 import { LogIn, LogOut } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
