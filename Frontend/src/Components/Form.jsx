@@ -47,10 +47,10 @@ const Form = () => {
 
       const code = await Fetchapi(payload);
 
-    
+
       const fullRedirect = `https://url-shortener-z9f3.onrender.com/${code}`;
-     setshortUrl(fullRedirect);
- 
+      setshortUrl(fullRedirect);
+
 
       queryClient.invalidateQueries({ queryKey: ['urlHistory'] });
 
@@ -96,7 +96,18 @@ const Form = () => {
             value={url}
 
 
-            onChange={(e) => setvalue(e.target.value)}
+            // onChange={(e) => setvalue(e.target.value)}
+
+            onChange={(e) => {
+              const raw = e.target.value;
+              const trimmed = raw
+                .trim()
+                .replace(/\s+/g, '-')
+                .replace(/[^a-zA-Z0-9-]/g, '') // drop any characters except letters, numbers, hyphens
+                .toLowerCase();
+                setcustomSlug(trimmed)
+            }}
+
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="https://example.com"
             required
@@ -115,11 +126,14 @@ const Form = () => {
               type="text"
               id="customSlug"
               value={customSlug}
-              onChange={
-                (e) => {
-                  setcustomSlug(e.target.value)
-                  setError(null)
-                }}
+              // onChange={
+              //   (e) => {
+              //     setcustomSlug(e.target.value)
+              //     setError(null)
+              //   }}
+
+              onChange={(e) => setcustomSlug(e.target.value)}
+
               placeholder="Your Custom URL"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
