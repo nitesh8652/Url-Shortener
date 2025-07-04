@@ -30,4 +30,3 @@ export async function sendmail(to, subject, text, html) {
   return info;
 }
 
-module.exports = {sendmail}
