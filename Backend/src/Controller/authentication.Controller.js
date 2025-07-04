@@ -4,6 +4,7 @@ import { cookieOptions } from "../config/Cookies.js";
 import { signToken } from "../Utils/helper.js";
 import bcrypt from "bcrypt";
 import { sendmail } from "../Utils/Mail.js";
+import { generateOtp } from "../Services/Otp.js";
 
 export const register = wrapAsync(async (req, res) => {
 
@@ -19,11 +20,20 @@ export const register = wrapAsync(async (req, res) => {
             user, token
         });
 
+        const otpvalidate = generateOtp(user.email)
         await sendmail(
-            email,
+            user.mail,
             "Welcome to URL Shortener",
-            `Hello ${name}, Welcome to URL Shortener. Your account has been created successfully.`
+            `Hello ${user.name}, Welcome to URL Shortener. Your account has been created successfully. Your OTP is ${otpvalidate}`,
+            "Ignore If You Have Not Registered"
         )
+
+        res.json({ success: true, message: 'OTP sent to your email' });
+        // await sendmail(
+        //     email,
+        //     "Welcome to URL Shortener",
+        //     `Hello ${name}, Welcome to URL Shortener. Your account has been created successfully.`
+        // )
 
         
     }catch (err) {

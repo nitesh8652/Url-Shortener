@@ -4,11 +4,13 @@ import express from 'express';
 import { login, logout, register } from '../Controller/authentication.Controller.js'; 
 import { authMiddleware } from '../Middleware/Middleware.authentication.js';
 import { getOrigin } from '../Controller/authentication.Controller.js';
+import { verifyRegistration } from '../Dao/Verifyotp.js';
 
 const router = express.Router();
 
 router.post('/login', login);
 router.post('/register', register);
+router.post('/register/verification', verifyRegistration)
 router.post('/logout', logout);
 router.get("/origin", authMiddleware, getOrigin)
 
