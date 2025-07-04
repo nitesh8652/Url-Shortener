@@ -3,6 +3,7 @@ import wrapAsync from "../Utils/TryCatch.js";
 import { cookieOptions } from "../config/Cookies.js";
 import { signToken } from "../Utils/helper.js";
 import bcrypt from "bcrypt";
+import { sendmail } from "../Utils/Mail.js";
 
 export const register = wrapAsync(async (req, res) => {
 
@@ -17,6 +18,13 @@ export const register = wrapAsync(async (req, res) => {
             message: "Login Successfull",
             user, token
         });
+
+        await sendingmail(
+            email,
+            "Welcome to URL Shortener",
+            `Hello ${name}, Welcome to URL Shortener. Your account has been created successfully.`
+        )
+
         
     }catch (err) {
         console.error("Registration Error:", err.message);  
