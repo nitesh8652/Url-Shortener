@@ -16,9 +16,11 @@ export const register = wrapAsync(async (req, res) => {
         const otpvalidate = generateOtp(email);
         await sendmail(
             email,
-            "Welcome to URL Shortener",
-            `Hello ${name}, Welcome to URL Shortener. Your OTP is ${otpvalidate}`,
-            "Ignore If You Have Not Registered"
+            `Dear ${name}`,
+            `Welcome to URL Shortener! Your One-Time Password (OTP) is: ${otpvalidate}`,
+            "Ignore If You Have Not Registered",
+            "Thank you,\nThe URL Shortener Team ",
+            "ft- nitesh"
         );
 
         // 3. Respond with OTP sent
