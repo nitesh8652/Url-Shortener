@@ -6,7 +6,7 @@ const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 4)
 
 export function generateOtp(email) {
     const otp = nanoid()
-    const expire = new Date.now() + 5* 60 * 1000
+  const expire = Date.now() + 5 * 60 * 1000
 
     otpStore.set(email,{
         otp,
