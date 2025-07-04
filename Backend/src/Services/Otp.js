@@ -1,6 +1,6 @@
 import { customAlphabet } from "nanoid";
 
-const otp = new Map()
+const otpStore = new Map()
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', 4)
 
@@ -8,7 +8,7 @@ export function generateOtp(email) {
     const otp = nanoid()
     const expire = new Date.now() + 5* 60 * 1000
 
-    otp.set(email,{
+    otpStore.set(email,{
         otp,
         expire
     })
@@ -19,13 +19,13 @@ export function generateOtp(email) {
 
 export function verifyOtp(email, candidate){
 
-    const record = otp.get(email)
+    const record = otpStore.get(email)
     if(!record) return false
 
     const {otp,expire} = record
 
     if(Date.now() > expire || otp !== candidate) {
-        otp.delete(email)
+        otpStore.delete(email)
         return false
     }
 

@@ -7,39 +7,26 @@ import { sendmail } from "../Utils/Mail.js";
 import { generateOtp } from "../Services/Otp.js";
 
 export const register = wrapAsync(async (req, res) => {
-
-    try{
-
+    try {
         const { name, email, password } = req.body;
-        const { user, token } = await registerUser(name, email, password);
-        req.user = user; 
-        res.cookie('accessToken', token, cookieOptions)
-        res.status(201).json({
-            success: true,
-            message: "Login Successfull",
-            user, token
-        });
+        // 1. Register user as unverified (add a 'verified' field to your user model)
+        const { user } = await registerUser(name, email, password); // user.verified = false
 
-        const otpvalidate = generateOtp(user.email)
+        // 2. Generate OTP and send email
+        const otpvalidate = generateOtp(email);
         await sendmail(
-            user.mail,
+            email,
             "Welcome to URL Shortener",
-            `Hello ${user.name}, Welcome to URL Shortener. Your account has been created successfully. Your OTP is ${otpvalidate}`,
+            `Hello ${name}, Welcome to URL Shortener. Your OTP is ${otpvalidate}`,
             "Ignore If You Have Not Registered"
-        )
+        );
 
-        res.json({ success: true, message: 'OTP sent to your email' });
-        // await sendmail(
-        //     email,
-        //     "Welcome to URL Shortener",
-        //     `Hello ${name}, Welcome to URL Shortener. Your account has been created successfully.`
-        // )
-
-        
-    }catch (err) {
-        console.error("Registration Error:", err.message);  
+        // 3. Respond with OTP sent
+        res.status(201).json({ success: true, message: 'OTP sent to your email' });
+    } catch (err) {
+        console.error("Registration Error:", err.message);
+        res.status(500).json({ success: false, message: "Registration failed" });
     }
-
 });
 
 
@@ -47,6 +34,11 @@ export const login = wrapAsync(async (req, res) => {
     const { email, password } = req.body;
     const { token, user } = await loginUser(email, password);
     
+
+    if(!user.verified){
+        return res.status(400).json({success: false, message: "Please verify your email"});
+    }
+
     // Set the cookie with the correct name
     res.cookie('accessToken', token, cookieOptions);
     
