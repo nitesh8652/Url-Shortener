@@ -10,8 +10,13 @@ export const RegisterUser = async (name, email, password) => {
     return data;
 };
 
+export const verifyotp = async (email, otp) => {
+    const {data} = await axiosInstance.post("/api/register/verification/", {email,otp });
+    return data;
+};
+
 export const LogoutUser = async () => {
-    const {data} = await axiosInstance.post("/api/authentication/logout");
+    const {data} = await axiosInstance.get("/api/authentication/logout");
     return data;
 };
 
