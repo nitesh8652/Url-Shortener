@@ -15,16 +15,15 @@ export const register = wrapAsync(async (req, res) => {
         // 2. Generate OTP and send email
         const otpvalidate = generateOtp(email);
 
-        const otpMessage = 
-  `Welcome to URL Shortener ${name}!\n` +
-  `Your Verification Code Is: ${otpvalidate}\n` +
-  "Ignore If You Have Not Registered\n" +
-  "Thank you,\nThe URL Shortener Team";
+        
 
         await sendmail(
             email,
             "Url Shortener Authentication",
-         otpMessage
+            `Welcome to URL Shortener ${name}! , Your Verification Code Is: ${otpvalidate} || gnore If You Have Not Registered`,
+            
+          
+            
             
         );
 
