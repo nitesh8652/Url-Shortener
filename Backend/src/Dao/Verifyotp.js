@@ -1,4 +1,6 @@
 import { verifyOtp } from "../Services/Otp.js";
+import { signToken } from "../Utils/helper.js";
+import { cookieOptions } from "../config/Cookies.js";
 import User from "../models/UserModel.js"
 
 export const verifyRegistration = async (req, res) => {
@@ -15,6 +17,10 @@ export const verifyRegistration = async (req, res) => {
             verified: true
         }
     })
+
+    const user = await User.findOne({email})
+    const token = signToken({ id: user._id });
+    res.cookie("accessToken",token,cookieOptions)
 
     res.json({ success: true, message: 'Registration complete! You can now log in.' })
 }; 

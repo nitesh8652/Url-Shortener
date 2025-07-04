@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+      verified:{
+         type: Boolean, default: false 
+        }, 
     // avatar : {
     //     type:String,
     //     required: false,

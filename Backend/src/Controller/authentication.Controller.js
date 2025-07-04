@@ -20,7 +20,7 @@ export const register = wrapAsync(async (req, res) => {
         await sendmail(
             email,
             "Url Shortener Authentication",
-            `Welcome to URL Shortener ${name}! , Your Verification Code Is: ${otpvalidate} || gnore If You Have Not Registered`,
+            `Welcome to URL Shortener ${name}! , Your Verification Code Is: ${otpvalidate}                 || gnore If You Have Not Registered`,
             
           
             
