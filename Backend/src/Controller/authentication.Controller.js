@@ -19,7 +19,7 @@ export const register = wrapAsync(async (req, res) => {
             user, token
         });
 
-        await sendingmail(
+        await sendmail(
             email,
             "Welcome to URL Shortener",
             `Hello ${name}, Welcome to URL Shortener. Your account has been created successfully.`
