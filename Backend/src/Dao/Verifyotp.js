@@ -1,5 +1,5 @@
 import { verifyOtp } from "../Services/Otp.js";
-import {User} from "../Models/UserModel.js"
+import {User} from "../models/UserModel.js"
 
 export const verifyRegistration = async (req, res) => {
 
