@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 import express from "express"
 import { nanoid } from "nanoid";
 import connectDB from "./src/config/mongo.config.js"
-import shorturl from "./src/models/Model.js"
+import shorturl from "./src/Model/Model.js"
 import authentication from "./src/Routes/authentication.Routes.js"
 import "./src/Routes/Routes.js" 
 import shorturlRouter from "./src/Routes/Routes.js"
