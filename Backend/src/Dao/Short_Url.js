@@ -1,4 +1,4 @@
-import shortUrl from '../models/Model.js';
+import shortUrl from '../Model/Model.js';
 import { ConflictError } from '../Utils/ErrorHandling.js';
 import { generateNanoid } from '../Utils/helper.js';
 
