@@ -1,100 +1,57 @@
-// Backend/src/Controller/authentication.Controller.js
-
-import { registerUser, loginUser } from "../Services/authentication.Service.js";
+import { get } from "mongoose";
+import { getshortUrlByCode } from "../Dao/Short_Url.js";
+import { CreateShortUrlWithoutUser } from "../Services/Services.js";
 import wrapAsync from "../Utils/TryCatch.js";
-import { cookieOptions } from "../config/Cookies.js";
-import { generateOtp, verifyOtp } from "../Services/Otp.js";
-import User from "../Model/UserModel.js";
-import { signToken } from "../Utils/helper.js";
-import { sendmail } from "../Utils/Mail.js";
+import { CreateShortUrlWithUser } from "../Services/Services.js";
+import shortUrl from "../models/Model.js";
 
-export const register = wrapAsync(async (req, res) => {
-  const { name, email, password } = req.body;
+export const createShortUrl = wrapAsync(async (req, res) => {
+    const data = req.body
+    console.log(data)
+    let shortUrlCode;
+    console.log(req.user, "req.user in createShortUrl");
+    if (req.user) {
+        shortUrlCode = await CreateShortUrlWithUser(data.url, req.user._id, data.Slug)
+    } else {
+        shortUrlCode = await CreateShortUrlWithoutUser(data.url);
 
-  // 1) Create the user (verified defaults to false)
-  const { user } = await registerUser(name, email, password);
+    }
+    console.log(data)
 
-  // 2) Generate & send OTP
-  const otp = generateOtp(user.email);
-  await sendmail(
-    user.email,
-    "Verify your email",
-    `Welcome, ${name}! Your verification code is ${otp}.`
-  );
+const host = req.get('host');            // e.g. "url-shortener-z9f3.onrender.com"
+  const protocol = req.secure ? 'https' : 'http';
+  const base = `${protocol}://${host}`;     // "https://url-shortener-z9f3.onrender.com"
 
-  // 3) Tell client to prompt for OTP
-  res.status(201).json({
-    success: true,
-    message: "OTP sent to your email address.",
-  });
+  const fullShortUrl = `${base}/${shortCode}`;  
+  console.log("Returning short URL:", fullShortUrl);
+
+  res.status(200).json({ shortUrl: fullShortUrl });
+
+    // res.status(200).json({ shortUrl: process.env.APP_URL + shortUrlCode })
 });
 
-export const verifyRegistration = wrapAsync(async (req, res) => {
-  const { email, otp } = req.body;
 
-  // 1) Verify the OTP
-  if (!verifyOtp(email, otp)) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid or expired OTP.",
-    });
-  }
 
-  // 2) Mark user as verified
-  const user = await User.findOneAndUpdate(
-    { email },
-    { $set: { verified: true } },
-    { new: true }
-  );
+export const redirectfromshorturl = wrapAsync(async (req, res) => {
+    const { id } = req.params
+    const url = await getshortUrlByCode(id);
+    if (url && url.full_url) {
+        res.redirect(url.full_url)
+    } else {
+        res.status(404).send("URL not found");
+    }
 
-  // 3) Issue JWT and set cookie
-  const token = signToken(user._id);
-  res.cookie("accessToken", token, cookieOptions);
+})
 
-  // 4) Respond with user + token
-  res.json({
-    success: true,
-    message: "Email verified! You are now logged in.",
-    user,
-    token,
-  });
-});
-
-export const login = wrapAsync(async (req, res) => {
-  const { email, password } = req.body;
-  const { user, token } = await loginUser(email, password);
-
-  // refuse if not verified
-  if (!user.verified) {
-    return res.status(400).json({
-      success: false,
-      message: "Please verify your email first.",
-    });
-  }
-
-  // set cookie + respond
-  res.cookie("accessToken", token, cookieOptions);
-  res.json({
-    success: true,
-    message: "Login successful.",
-    user,
-  });
-});
-
-export const getOrigin = wrapAsync(async (req, res) => {
-  // Must be used after authMiddleware
-  res.json({
-    success: true,
-    message: "User verified.",
-    user: req.user,
-  });
-});
-
-export const logout = (req, res) => {
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
-  });
-  res.json({ success: true, message: "Logged out successfully." });
-};
+export const createCustomShortUrlService = wrapAsync(async (req, res) => {
+    const { url, Slug } = req.body
+    let shortUrlCode;
+    if (req.user) {
+        shortUrlCode = await CreateShortUrlWithUser(url, req.user._id, Slug)
+    } else {
+        shortUrlCode = await CreateShortUrlWithoutUser(url);
+    }
+    res.status(200).json({
+        shortUrl: process.env.APP_URL + shortUrlCode
+    })
+})
