@@ -1,52 +1,100 @@
-import { get } from "mongoose";
-import { getshortUrlByCode } from "../Dao/Short_Url.js";
-import { CreateShortUrlWithoutUser } from "../Services/Services.js";
+// Backend/src/Controller/authentication.Controller.js
+
+import { registerUser, loginUser } from "../Services/authentication.Service.js";
 import wrapAsync from "../Utils/TryCatch.js";
-import { CreateShortUrlWithUser } from "../Services/Services.js";
-import shortUrl from "../Model/Model.js";
+import { cookieOptions } from "../config/Cookies.js";
+import { signToken } from "../Utils/helper.js";
+import { sendmail } from "../Utils/Mail.js";
+import { generateOtp, verifyOtp } from "../Services/Otp.js";
+import User from "../Models/UserModel.js";
 
-export const createShortUrl = wrapAsync(async (req, res) => {
-    const data = req.body
-    console.log(data)
-    let shortUrlCode;
-    console.log(req.user, "req.user in createShortUrl");
-    if (req.user) {
-        shortUrlCode = await CreateShortUrlWithUser(data.url, req.user._id, data.Slug)
-    } else {
-        shortUrlCode = await CreateShortUrlWithoutUser(data.url);
+export const register = wrapAsync(async (req, res) => {
+  const { name, email, password } = req.body;
 
-    }
-    console.log(data)
+  // 1) Create user with verified: false
+  const { user } = await registerUser(name, email, password);
 
-const host = req.get('host');            // e.g. "url-shortener-z9f3.onrender.com"
-  const protocol = req.secure ? 'https' : 'http';
-  const base = `${protocol}://${host}`;     // "https://url-shortener-z9f3.onrender.com"
+  // 2) Generate & email the OTP
+  const otp = generateOtp(user.email);
+  await sendmail(
+    user.email,
+    "Verify your Email",
+    `Hello ${user.username || name}, your verification code is: ${otp}`
+  );
 
-  const fullShortUrl = `${base}/${shortUrlCode}`;  
-  console.log("Returning short URL:", fullShortUrl);
-
-  res.status(200).json({ shortUrl: fullShortUrl });
-
-    // res.status(200).json({ shortUrl: process.env.APP_URL + shortUrlCode })
+  // 3) Tell the front‑end to prompt the OTP form
+  res
+    .status(201)
+    .json({ success: true, message: "OTP sent to your email address." });
 });
 
+export const verifyRegistration = wrapAsync(async (req, res) => {
+  const { email, otp } = req.body;
 
+  // 1) Check the OTP
+  if (!verifyOtp(email, otp)) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid or expired OTP." });
+  }
 
-export const redirectfromshorturl = wrapAsync(async (req, res) => {
-    const { id } = req.params
-    const url = await getshortUrlByCode(id);
-    if (url && url.full_url) {
-        res.redirect(url.full_url)
-    } else {
-        res.status(404).send("URL not found");
-    }
+  // 2) Mark user as verified
+  const user = await User.findOneAndUpdate(
+    { email },
+    { $set: { verified: true } },
+    { new: true }
+  );
 
-})
+  // 3) Sign a JWT and set the cookie
+  const token = signToken(user._id);
+  res.cookie("accessToken", token, cookieOptions);
 
-export const createCustomShortUrl = wrapAsync(async (req, res) => {
-    const { url, Slug } = req.body
-    const shortUrl = await createCustomShortUrlService(url, Slug)
-    res.status(200).json({
-        shortUrl: process.env.APP_URL + shortUrl
-    })
-})
+  // 4) Return success + user + token
+  res.json({
+    success: true,
+    message: "Registration complete! You are now logged in.",
+    user,
+    token,
+  });
+});
+
+export const login = wrapAsync(async (req, res) => {
+  const { email, password } = req.body;
+
+  // 1) Authenticate
+  const { user, token } = await loginUser(email, password);
+
+  // 2) Refuse if not yet verified
+  if (!user.verified) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Please verify your email first." });
+  }
+
+  // 3) Otherwise set cookie + return
+  res.cookie("accessToken", token, cookieOptions);
+  res.status(200).json({
+    success: true,
+    message: "Login successful.",
+    user,
+  });
+});
+
+export const getOrigin = wrapAsync(async (req, res) => {
+  // Protected route — authMiddleware has attached req.user
+  res.json({
+    success: true,
+    message: "User verified.",
+    user: req.user,
+  });
+});
+
+export const logout = (req, res) => {
+  // Clear the cookie (options must match how it was set)
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
+  });
+  res.json({ success: true, message: "Logged out successfully." });
+};
