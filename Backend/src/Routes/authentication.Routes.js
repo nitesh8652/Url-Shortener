@@ -8,9 +8,11 @@ import { verifyRegistration } from '../Dao/Verifyotp.js';
 
 const router = express.Router();
 
-router.post('/login', login);
 router.post('/register', register);
 router.post('/register/verification', verifyRegistration)
+
+router.post('/login', login);
+
 router.post('/logout', logout);
 router.get("/origin", authMiddleware, getOrigin)
 
