@@ -35,3 +35,7 @@ export const verifyRegistration = wrapAsync(async (req, res) => {
     token
   });
 });
+
+export const getOrigin = (req, res) => {
+  res.json({ origin: req.headers.origin || req.get('origin') || '' });
+};
