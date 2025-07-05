@@ -1,100 +1,108 @@
-// Backend/src/Controller/authentication.Controller.js
-
 import { registerUser, loginUser } from "../Services/authentication.Service.js";
 import wrapAsync from "../Utils/TryCatch.js";
 import { cookieOptions } from "../config/Cookies.js";
+import { verifyOtp } from "../Services/Otp.js";
+import User from "../Models/UserModel.js";
 import { signToken } from "../Utils/helper.js";
+import bcrypt from "bcrypt";
 import { sendmail } from "../Utils/Mail.js";
-import { generateOtp, verifyOtp } from "../Services/Otp.js";
-import User from "../Model/UserModel.js";
+import { generateOtp } from "../Services/Otp.js";
 
 export const register = wrapAsync(async (req, res) => {
-  const { name, email, password } = req.body;
+    try {
+        const { name, email, password } = req.body;
+        // 1. Register user as unverified (add a 'verified' field to your user model)
+        const { user } = await registerUser(name, email, password); // user.verified = false
 
-  // 1) Create user with verified: false
-  const { user } = await registerUser(name, email, password);
+        // 2. Generate OTP and send email
+        const otpvalidate = generateOtp(email);
 
-  // 2) Generate & email the OTP
-  const otp = generateOtp(user.email);
-  await sendmail(
-    user.email,
-    "Verify your Email",
-    `Hello ${user.username || name}, your verification code is: ${otp}`
-  );
+        
 
-  // 3) Tell the front‑end to prompt the OTP form
-  res
-    .status(201)
-    .json({ success: true, message: "OTP sent to your email address." });
+        await sendmail(
+            email,
+            "Url Shortener Authentication",
+            `Welcome to URL Shortener ${name}! , Your Verification Code Is: ${otpvalidate}                 || gnore If You Have Not Registered`,
+            
+          
+            
+            
+        );
+
+        // 3. Respond with OTP sent
+        res.status(201).json({ success: true, message: 'OTP sent to your email' });
+    } catch (err) {
+        console.error("Registration Error:", err.message);
+        res.status(500).json({ success: false, message: "Registration failed" });
+    }
 });
 
+
+export const login = wrapAsync(async (req, res) => {
+    const { email, password } = req.body;
+    const { token, user } = await loginUser(email, password);
+    
+
+    if(!user.verified){
+        return res.status(400).json({success: false, message: "Please verify your email"});
+    }
+import { cookieOptions } from "../config/Cookies.js";
+
+    // Set the cookie with the correct name
+    res.cookie('accessToken', token, cookieOptions);
+    
+    console.log('Setting cookie:', 'accessToken', token);
+    
+    res.status(200).json({
+        success: true,
+        message: "Login Successful",
+        user
+    });
+});
 export const verifyRegistration = wrapAsync(async (req, res) => {
   const { email, otp } = req.body;
 
-  // 1) Check the OTP
+export const getOrigin = wrapAsync(async (req, res) => {
+    console.log('User in request:', req.user);
+    res.status(200).json({
+        success: true,
+        message: "User Verified",
+        user: req.user
   if (!verifyOtp(email, otp)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid or expired OTP." });
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid or expired OTP.'
+    });
+
+}); 
+
+export const logout = (req, res) =>{
+ res.clearCookie('accessToken', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'None'
   }
 
-  // 2) Mark user as verified
+  // Mark user verified
   const user = await User.findOneAndUpdate(
     { email },
     { $set: { verified: true } },
     { new: true }
   );
 
-  // 3) Sign a JWT and set the cookie
+  // Sign a JWT
   const token = signToken(user._id);
-  res.cookie("accessToken", token, cookieOptions);
 
-  // 4) Return success + user + token
+  // Set the cookie
+  res.cookie('accessToken', token, cookieOptions);
+
+  // Return success + user
   res.json({
     success: true,
-    message: "Registration complete! You are now logged in.",
+    message: 'Email verified!',
     user,
-    token,
+    token
   });
-});
-
-export const login = wrapAsync(async (req, res) => {
-  const { email, password } = req.body;
-
-  // 1) Authenticate
-  const { user, token } = await loginUser(email, password);
-
-  // 2) Refuse if not yet verified
-  if (!user.verified) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Please verify your email first." });
-  }
-
-  // 3) Otherwise set cookie + return
-  res.cookie("accessToken", token, cookieOptions);
-  res.status(200).json({
-    success: true,
-    message: "Login successful.",
-    user,
-  });
-});
-
-export const getOrigin = wrapAsync(async (req, res) => {
-  // Protected route — authMiddleware has attached req.user
-  res.json({
-    success: true,
-    message: "User verified.",
-    user: req.user,
-  });
-});
-
-export const logout = (req, res) => {
-  // Clear the cookie (options must match how it was set)
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
-  });
-  res.json({ success: true, message: "Logged out successfully." });
+  return res.status(200).json({ message: 'Logged out successfully' });
 };
+});
