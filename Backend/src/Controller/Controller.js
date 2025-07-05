@@ -4,7 +4,7 @@ import { registerUser, loginUser } from "../Services/authentication.Service.js";
 import wrapAsync from "../Utils/TryCatch.js";
 import { cookieOptions } from "../config/Cookies.js";
 import { generateOtp, verifyOtp } from "../Services/Otp.js";
-import User from "../Models/UserModel.js";
+import User from "../Model/UserModel.js";
 import { signToken } from "../Utils/helper.js";
 import { sendmail } from "../Utils/Mail.js";
 
