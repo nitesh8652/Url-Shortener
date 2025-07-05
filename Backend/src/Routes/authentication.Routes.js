@@ -1,7 +1,7 @@
 // FIXED authentication.Routes.js
 
 import express from 'express';
-import { login, logout, register } from '../Controller/.Controller.js'; 
+import { login, logout, register } from '../Controller/Controller.js'; 
 import { authMiddleware } from '../Middleware/Middleware.authentication.js';
 import { getOrigin } from '../Controller/authentication.Controller.js';
 import { verifyRegistration } from '../Dao/Verifyotp.js';
