@@ -10,8 +10,8 @@ export const RegisterUser = async (name, email, password) => {
     return data;
 };
 
-export const verifyotp = async (email, otp) => {
-    const {data} = await axiosInstance.post("/api/authentication/register/verify-otp/", {email,otp }, { withCredentials: true } );
+export const verifyOtp = async (email, otp) => {
+    const { data } = await axiosInstance.post("/api/authentication/register/verify-otp/", { email, otp }, { withCredentials: true });
     return data;
 };
 
