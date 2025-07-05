@@ -22,5 +22,5 @@ export const verifyRegistration = async (req, res) => {
     const token = signToken({ id: user._id });
     res.cookie("accessToken",token,cookieOptions)
 
-    res.json({ success: true, message: 'Registration complete! You can now log in.' })
+    res.json({ success: true, message: 'Registration complete! You can now log in.', user })
 }; 
