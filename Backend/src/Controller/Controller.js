@@ -6,7 +6,7 @@ import { cookieOptions } from "../config/Cookies.js";
 import { signToken } from "../Utils/helper.js";
 import { sendmail } from "../Utils/Mail.js";
 import { generateOtp, verifyOtp } from "../Services/Otp.js";
-import User from "../Models/UserModel.js";
+import User from "../Model/UserModel.js";
 
 export const register = wrapAsync(async (req, res) => {
   const { name, email, password } = req.body;
