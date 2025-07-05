@@ -1,6 +1,6 @@
 import wrapAsync from "../Utils/TryCatch.js";
 import { verifyOtp } from "../Services/Otp.js";
-import User from "../Models/UserModel.js";
+import User from "../Model/UserModel.js";
 import { signToken } from "../Utils/helper.js";
 import { cookieOptions } from "../config/Cookies.js";
 

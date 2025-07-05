@@ -1,7 +1,7 @@
 import { verifyOtp } from "../Services/Otp.js";
 import { signToken } from "../Utils/helper.js";
 import { cookieOptions } from "../config/Cookies.js";
-import User from "../models/UserModel.js"
+import User from "../Model/UserModel.js"
 
 export const verifyRegistration = async (req, res) => {
 
