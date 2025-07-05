@@ -3,7 +3,7 @@ import { getshortUrlByCode } from "../Dao/Short_Url.js";
 import { CreateShortUrlWithoutUser } from "../Services/Services.js";
 import wrapAsync from "../Utils/TryCatch.js";
 import { CreateShortUrlWithUser } from "../Services/Services.js";
-import shortUrl from "../models/Model.js";
+import shortUrl from "../Model/Model.js";
 
 export const createShortUrl = wrapAsync(async (req, res) => {
     const data = req.body
