@@ -18,7 +18,7 @@ const OtpVerification = ({ email }) => {
       dispatch(login(data.user)); // update redux state
       navigate({ to: "/dashboard" });
     } catch (err) {
-      setError(err.response?.data?.message || "OTP verification failed.");
+      setError(err.response?.data?.message || 'OTP verification failed.');
     }
   };
 

@@ -11,7 +11,7 @@ export const RegisterUser = async (name, email, password) => {
 };
 
 export const verifyotp = async (email, otp) => {
-    const {data} = await axiosInstance.post("/api/register/verification/", {email,otp });
+    const {data} = await axiosInstance.post("/api/authentication/register/verify-otp/", {email,otp }, { withCredentials: true } );
     return data;
 };
 
