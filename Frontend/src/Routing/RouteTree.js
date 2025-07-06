@@ -4,7 +4,7 @@ import {HomingRoute} from "./Homing"
 import {AuthRoute} from "./AuthRoute.js"
 import {DashboardRoute} from "./Dashboard"
 import {QrGenerator} from "./Qr.js"
-import {otpverification, otpverificationRoute} from "./Verification.js"
+import {otpverificationRoute} from "./Verification.js"
 
 
 
