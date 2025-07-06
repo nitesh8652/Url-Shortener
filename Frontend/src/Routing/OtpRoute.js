@@ -1,10 +1,10 @@
 // src/Routing/OtpRoute.js
 import { createRoute } from '@tanstack/react-router'
-import OtpRegistrationPage from '../Pages/OtpRegistrationPage'
-import { rootRoute } from './RouteTree'  // this import is fine because RouteTree only exports the root
+import { rootRoute }        from './RouteTree'
+import OtpRegistrationPage  from '../Pages/OtpRegistrationPage'
 
 export const otpVerificationRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/verificationcode',
-  component: OtpRegistrationPage,
+  path:           '/verificationcode',
+  component:      OtpRegistrationPage,
 })
