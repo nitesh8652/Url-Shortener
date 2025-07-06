@@ -22,7 +22,7 @@ export const register = wrapAsync(async (req, res) => {
         // 3. Respond with OTP sent
         res.status(201).json({ success: true, message: 'OTP sent to your email' });
     } catch (err) {
-        console.error("Registration Error:", err.message);
+        console.error("Registration Error:", err);
         res.status(500).json({ success: false, message: "Registration failed" });
     }
 });
@@ -41,18 +41,18 @@ export const verifyRegistration = wrapAsync (async (req,res)=>{
   res.cookie("accessToken", token, cookieOptions);
 
   // Redirect to dashboard
-  res.redirect('/dashboard');
+//   res.redirect('/dashboard');
 } else {
   return res
     .status(400)
     .json({ success: false, message: "Invalid or expired OTP." });
 }
-    const token = signToken(user._id);
+    const token = signToken(User._id);
     res.cookie("accessToken",token,cookieOptions);
     res.json({
         success:true,
         message:"Email Verified!",
-        user,
+        User,
         token
     })
 
