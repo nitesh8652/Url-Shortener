@@ -7,6 +7,45 @@ import { sendmail } from "../Utils/Mail.js";
 import { generateOtp, verifyOtp } from "../Services/Otp.js";
 import User from "../Model/UserModel.js";
 
+// src/Controller/authentication.Controller.js
+import wrapAsync from "../Utils/TryCatch.js";
+import { verifyOtp }   from "../Services/Otp.js";
+import User            from "../Models/UserModel.js";
+import { signToken }   from "../Utils/helper.js";
+import { cookieOptions } from "../config/Cookies.js";
+
+export const verifyRegistration = wrapAsync(async (req, res) => {
+  const { email, otp } = req.body;
+
+  // 1) Validate OTP
+  if (!verifyOtp(email, otp)) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Invalid or expired OTP." });
+  }
+
+  // 2) Mark user as verified
+  await User.updateOne({ email }, { $set: { verified: true } });
+
+  // 3) Fetch the newly verified user
+  const user = await User.findOne({ email });
+
+  // 4) Issue JWT + set cookie
+  const token = signToken(user._id);
+  res.cookie("accessToken", token, {
+    ...cookieOptions,
+    sameSite: "None",   // force None so browser will accept it cross-site
+    secure:   true      // must be secure when sameSite=None
+  });
+
+  // 5) Return success + user
+  return res.json({
+    success: true,
+    message: "Email verified! You are now logged in.",
+    user
+  });
+});
+
 export const register = wrapAsync(async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -27,37 +66,7 @@ export const register = wrapAsync(async (req, res) => {
     }
 });
 
-export const verifyRegistration = wrapAsync (async (req,res)=>{
-    const  {email,otp} = req.body
-  if (verifyOtp(email, otp)) {
-  // Mark user as verified
-  await User.updateOne({ email }, { $set: { verified: true } });
-
-  // Fetch the newly verified user
-  const user = await User.findOne({ email });
-
-  // Issue JWT + set cookie
-  const token = signToken(user._id);
-  res.cookie("accessToken", token, cookieOptions);
-
-  // Redirect to dashboard
-//   res.redirect('/dashboard');
-} else {
-  return res
-    .status(400)
-    .json({ success: false, message: "Invalid or expired OTP." });
-}
-    const token = signToken(User._id);
-    res.cookie("accessToken",token,cookieOptions);
-    res.json({
-        success:true,
-        message:"Email Verified!",
-        User,
-        token
-    })
-
-})
-
+     
 export const login = wrapAsync(async (req, res) => {
     const { email, password } = req.body;
     const { token, user } = await loginUser(email, password);
