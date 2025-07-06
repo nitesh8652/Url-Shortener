@@ -5,7 +5,7 @@ import { HomingRoute } from './Homing'
 import { AuthRoute }  from './AuthRoute'
 import { DashboardRoute } from './Dashboard'
 import { QrGenerator } from './Qr'
-import { otpVerificationRoute } from './OtpRoute'  // <— no cycle
+
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
@@ -16,5 +16,5 @@ export const routeTree = rootRoute.addChildren([
   AuthRoute,
   DashboardRoute,
   QrGenerator,
-  otpVerificationRoute,   // <— now safe
+  
 ])
