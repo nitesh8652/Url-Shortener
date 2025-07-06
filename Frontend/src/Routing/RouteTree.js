@@ -1,18 +1,15 @@
+// src/Routing/RouteTree.js
 import { createRootRoute } from '@tanstack/react-router'
 import RootLayout from '../RootLayout'
+import { OtpRoute } from './OtpRoute'
 import { HomingRoute } from './Homing'
-import { AuthRoute  } from './AuthRoute'
+import { AuthRoute }  from './AuthRoute'
 import { DashboardRoute } from './Dashboard'
 import { QrGenerator } from './Qr'
-import { otpVerificationRoute } from './OtpRoute'
-import ErrorBoundary from '../ErrorBoundary'  // Make sure to create this component
+
 
 export const rootRoute = createRootRoute({
-  component: () => (
-    <ErrorBoundary>
-      <RootLayout />
-    </ErrorBoundary>
-  ),
+  component: RootLayout,
 })
 
 export const routeTree = rootRoute.addChildren([
@@ -20,5 +17,6 @@ export const routeTree = rootRoute.addChildren([
   AuthRoute,
   DashboardRoute,
   QrGenerator,
-  otpVerificationRoute,
+  OtpRoute,
 ])
+
