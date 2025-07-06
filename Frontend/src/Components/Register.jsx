@@ -30,10 +30,10 @@ const Register = ({ state }) => {
       const data = await RegisterUser(name, email, password);
       console.log('signup successful', data);
 
-    
+    navigate({to: "/verify-otp" , search:{email}})
       
 
-        navigate({ to: '/dashboard' });
+        // navigate({ to: '/dashboard' });
      
 
     } catch (err) {
