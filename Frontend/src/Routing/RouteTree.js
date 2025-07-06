@@ -1,24 +1,20 @@
-import RootLayout from "../RootLayout"
-import { createRootRoute } from "@tanstack/react-router";
-import {HomingRoute} from "./Homing"
-import {AuthRoute} from "./AuthRoute.js"
-import {DashboardRoute} from "./Dashboard"
-import {QrGenerator} from "./Qr.js"
-import {otpVerificationRoute} from "./Verification.js"
-
-
+// src/Routing/RouteTree.js
+import { createRootRoute } from '@tanstack/react-router'
+import RootLayout from '../RootLayout'
+import { HomingRoute } from './Homing'
+import { AuthRoute }  from './AuthRoute'
+import { DashboardRoute } from './Dashboard'
+import { QrGenerator } from './Qr'
+import { otpVerificationRoute } from './OtpRoute'  // <— no cycle
 
 export const rootRoute = createRootRoute({
-    component: RootLayout ,
+  component: RootLayout,
 })
-
- 
 
 export const routeTree = rootRoute.addChildren([
   HomingRoute,
   AuthRoute,
   DashboardRoute,
   QrGenerator,
-  otpVerificationRoute
-]);
-
+  otpVerificationRoute,   // <— now safe
+])

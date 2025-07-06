@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RegisterUser } from '../Api/UserApi';
 import { useNavigate } from '@tanstack/react-router';
-import { otpVerificationRoute } from '../Routing/Verification';
+import { otpVerificationRoute } from '../Routing/OtpRoute';
 
 const Register = ({ state }) => {
   const [name, setName]           = useState('');
