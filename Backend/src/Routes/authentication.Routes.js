@@ -1,19 +1,16 @@
-// FIXED authentication.Routes.js
-
 import express from 'express';
-import { login, logout, register } from '../Controller/authentication.Controller.js'; 
+import { login, logout, register, getOrigin, verifyRegistration,  } from '../Controller/authentication.Controller.js'; 
 import { authMiddleware } from '../Middleware/Middleware.authentication.js';
-import { getOrigin } from '../Controller/authentication.Controller.js';
-import { verifyRegistration } from '../Dao/Verifyotp.js';
+
 
 const router = express.Router();
 
 router.post('/register', register);
-router.post('/register/verification', verifyRegistration)
+router.post('/register/verify-otp', verifyRegistration)
 
 router.post('/login', login);
 
-router.post('/logout', logout);
 router.get("/origin", authMiddleware, getOrigin)
+router.post('/logout', logout);
 
 export default router;

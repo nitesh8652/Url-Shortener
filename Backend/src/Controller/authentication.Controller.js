@@ -4,27 +4,19 @@ import { cookieOptions } from "../config/Cookies.js";
 import { signToken } from "../Utils/helper.js";
 import bcrypt from "bcrypt";
 import { sendmail } from "../Utils/Mail.js";
-import { generateOtp } from "../Services/Otp.js";
+import { generateOtp, verifyOtp } from "../Services/Otp.js";
+import User from "../Model/UserModel.js";
 
 export const register = wrapAsync(async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        // 1. Register user as unverified (add a 'verified' field to your user model)
         const { user } = await registerUser(name, email, password); // user.verified = false
-
-        // 2. Generate OTP and send email
         const otpvalidate = generateOtp(email);
-
-        
 
         await sendmail(
             email,
             "Url Shortener Authentication",
             `Welcome to URL Shortener ${name}! , Your Verification Code Is: ${otpvalidate}                 || gnore If You Have Not Registered`,
-            
-          
-            
-            
         );
 
         // 3. Respond with OTP sent
@@ -35,21 +27,15 @@ export const register = wrapAsync(async (req, res) => {
     }
 });
 
-
 export const login = wrapAsync(async (req, res) => {
     const { email, password } = req.body;
     const { token, user } = await loginUser(email, password);
-    
-
     if(!user.verified){
         return res.status(400).json({success: false, message: "Please verify your email"});
     }
-
     // Set the cookie with the correct name
-    res.cookie('accessToken', token, cookieOptions);
-    
+    res.cookie('accessToken', token, cookieOptions);    
     console.log('Setting cookie:', 'accessToken', token);
-    
     res.status(200).json({
         success: true,
         message: "Login Successful",
@@ -75,3 +61,32 @@ export const logout = (req, res) =>{
   });
   return res.status(200).json({ message: 'Logged out successfully' });
 };
+
+export const verifyRegistration = wrapAsync (async (req,res)=>{
+    const  {email,otp} = req.body
+    if(!verifyOtp(email,otp)){
+        return res.status(400).json({
+            success:false,
+            message:"Invalid or expired OTP"
+            
+        })
+    }
+
+    const user = await User.findOneAndUpdate(
+        {email},
+        { $set:{
+            verified:true
+        }},
+        { new: true}
+    )
+
+    const token = signToken(user._id);
+    res.cookie("accessToken",token,cookieOptions);
+    res.json({
+        success:true,
+        message:"Email Verified!",
+        user,
+        token
+    })
+
+})
