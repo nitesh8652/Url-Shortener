@@ -1,9 +1,9 @@
-import { useLocation } from 'react-router-dom';
+import { useRouter } from '@tanstack/react-router';
 import OtpRegistrationForm from '../Components/OtpRegistrationForm';
 
 const OtpRegistrationPage = () => {
-  const location = useLocation();
-  const email = location.state?.email || '';
+  const router = useRouter();
+  const email = router.state?.email || '';
 
   return (
     <div>
@@ -12,3 +12,5 @@ const OtpRegistrationPage = () => {
     </div>
   );
 };
+
+export default OtpRegistrationPage;
