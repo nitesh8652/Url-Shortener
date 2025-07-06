@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RegisterUser } from '../Api/UserApi';
 import { useNavigate } from '@tanstack/react-router';
+import { otpVerificationRoute } from '../Routing/Verification';
 
 const Register = ({ state }) => {
   const [name, setName]           = useState('');
@@ -28,7 +29,17 @@ const Register = ({ state }) => {
     try {
       const data = await RegisterUser(name, email, password);
       console.log('signup successful', data);
-      navigate({ to: '/dashboard' });
+
+      navigate({
+        to:otpVerificationRoute,
+        search:{email}
+      })
+
+      if(response.success){
+
+        navigate({ to: '/dashboard' });
+      }
+
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
       console.error('Registration Error:', err);

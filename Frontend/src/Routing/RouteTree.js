@@ -4,7 +4,7 @@ import {HomingRoute} from "./Homing"
 import {AuthRoute} from "./AuthRoute.js"
 import {DashboardRoute} from "./Dashboard"
 import {QrGenerator} from "./Qr.js"
-import {otpverification} from "./Verification.js"
+import {otpverification, otpverificationRoute} from "./Verification.js"
 
 
 
@@ -19,6 +19,6 @@ export const routeTree = rootRoute.addChildren([
   AuthRoute,
   DashboardRoute,
   QrGenerator,
-  otpverification
+  otpverificationRoute
 ]);
 

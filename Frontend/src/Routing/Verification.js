@@ -1,13 +1,11 @@
- import { createRoute } from "@tanstack/react-router";
-import Homepage from "../Pages/Homepage";
-import { rootRoute } from "./RouteTree";
-import AuthenticationPage from "../Pages/AuthenticationPage";
-import OtpRegistrationPage from "../Pages/OtpRegistrationPage";
+// src/Routing/OtpRoute.js
+import { createRoute } from '@tanstack/react-router'
+import OtpRegistrationPage from '../Pages/OtpRegistrationPage'
+import { rootRoute } from './RouteTree'
 
-export const otpverification = createRoute({
-    getParentRoute : () => rootRoute,
-    navigate :('/verificationcode',{
-        state:{email}
-    }) ,
-    component : OtpRegistrationPage
+export const otpVerificationRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/verificationcode',
+  component: OtpRegistrationPage,
 })
+    
