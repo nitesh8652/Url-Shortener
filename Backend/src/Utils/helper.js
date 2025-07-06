@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'; 
-import {cookieOptions} from '../config/Cookies.js';
+import {cookieOptions} from '../config/ies.js';
 import jsonwebtoken from 'jsonwebtoken'; // <-- Add this line
 
 
