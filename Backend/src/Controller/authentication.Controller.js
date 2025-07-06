@@ -7,12 +7,7 @@ import { sendmail } from "../Utils/Mail.js";
 import { generateOtp, verifyOtp } from "../Services/Otp.js";
 import User from "../Model/UserModel.js";
 
-// src/Controller/authentication.Controller.js
-import wrapAsync from "../Utils/TryCatch.js";
-import { verifyOtp }   from "../Services/Otp.js";
-import User            from "../Models/UserModel.js";
-import { signToken }   from "../Utils/helper.js";
-import { cookieOptions } from "../config/Cookies.js";
+
 
 export const verifyRegistration = wrapAsync(async (req, res) => {
   const { email, otp } = req.body;
