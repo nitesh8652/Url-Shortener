@@ -24,7 +24,7 @@ export const verifyRegistration = wrapAsync(async (req, res) => {
   const user = await User.findOne({ email });
 
   // 4) Issue JWT + set cookie with consistent options
-  const token = signToken(user._id); // Use same payload structure as login
+  const token = signToken({ id: user._id }); // Use same payload structure as login
   
   // Use the same cookie options as other functions
   res.cookie("accessToken", token, cookieOptions);
