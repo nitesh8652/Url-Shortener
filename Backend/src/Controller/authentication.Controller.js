@@ -27,6 +27,37 @@ export const register = wrapAsync(async (req, res) => {
     }
 });
 
+export const verifyRegistration = wrapAsync (async (req,res)=>{
+    const  {email,otp} = req.body
+  if (verifyOtp(email, otp)) {
+  // Mark user as verified
+  await User.updateOne({ email }, { $set: { verified: true } });
+
+  // Fetch the newly verified user
+  const user = await User.findOne({ email });
+
+  // Issue JWT + set cookie
+  const token = signToken(user._id);
+  res.cookie("accessToken", token, cookieOptions);
+
+  // Redirect to dashboard
+  res.redirect('/dashboard');
+} else {
+  return res
+    .status(400)
+    .json({ success: false, message: "Invalid or expired OTP." });
+}
+    const token = signToken(user._id);
+    res.cookie("accessToken",token,cookieOptions);
+    res.json({
+        success:true,
+        message:"Email Verified!",
+        user,
+        token
+    })
+
+})
+
 export const login = wrapAsync(async (req, res) => {
     const { email, password } = req.body;
     const { token, user } = await loginUser(email, password);
@@ -62,31 +93,3 @@ export const logout = (req, res) =>{
   return res.status(200).json({ message: 'Logged out successfully' });
 };
 
-export const verifyRegistration = wrapAsync (async (req,res)=>{
-    const  {email,otp} = req.body
-    if(!verifyOtp(email,otp)){
-        return res.status(400).json({
-            success:false,
-            message:"Invalid or expired OTP"
-            
-        })
-    }
-
-    const user = await User.findOneAndUpdate(
-        {email},
-        { $set:{
-            verified:true
-        }},
-        { new: true}
-    )
-
-    const token = signToken(user._id);
-    res.cookie("accessToken",token,cookieOptions);
-    res.json({
-        success:true,
-        message:"Email Verified!",
-        user,
-        token
-    })
-
-})
