@@ -9,8 +9,3 @@ export const AuthRoute = createRoute({
     component : AuthenticationPage
 })
 
-// export const Logout = createRoute({
-//     getParentRoute : () => rootRoute,
-//     path : '/logout',
-//     component : AuthenticationPage
-// })

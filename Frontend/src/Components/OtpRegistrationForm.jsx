@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
-import { verifyotp } from '../Api/UserApi';
+import { verifyOtp } from '../Api/UserApi';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-const OtpRegistrationForm = () => {
-    const [email, setEmail] = useState('');
-    const [otp, setOtp] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
+const OtpRegistrationForm = ({ email: initialEmail }) => {
+  const [email, setEmail] = useState(initialEmail);
+  const [otp, setOtp] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setErrorMessage('');
-
-        try {
-            const response = await verifyotp(email, otp);
-            if (response.success) {
-                navigate('/dashboard');
-            } else {
-                setErrorMessage('Invalid code');
-            }
-        } catch (error) {
-            setErrorMessage('An error occurred. Please try again.');
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
+    try {
+      const response = await verifyOtp(email, otp);
+      if (response.success) {
+        dispatch(setUser(response.user));
+        navigate('/dashboard');
+      } else {
+        setErrorMessage('Invalid code');
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred. Please try again.');
+    }
+  };
 
     return (
         <form onSubmit={handleSubmit}>
