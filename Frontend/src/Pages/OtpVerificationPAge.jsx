@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { verifyOtp } from "../Api/UserApi";
 import { useSearch } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
+import { useDispatch } from "react-redux";
+import { login } from "../Store/Slice/AuthSlice";
 
 const OtpVerificationPage = () => {
   const [otp, setOtp] = useState("");
@@ -9,13 +11,22 @@ const OtpVerificationPage = () => {
   const { email } = useSearch();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
+    
     try {
-      await verifyOtp(email, otp);
+      const data = await verifyOtp(email, otp);
+      
+      // Dispatch login action with user data
+      if (data.user) {
+        dispatch(login(data.user));
+      }
+      
+      // Navigate to dashboard
       navigate({ to: "/dashboard" });
     } catch (err) {
       setError(err.message || "Invalid or expired OTP.");
