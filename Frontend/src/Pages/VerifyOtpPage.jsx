@@ -1,23 +1,44 @@
 import React, { useState } from 'react';
-import { verifyOtp } from '../Api/UserApi';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { useDispatch } from 'react-redux';
+import { OtpRoute } from '../Routing/OtpRoute';
 
 const VerifyOtpPage = () => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { email } = useSearch();
+  const { email } = OtpRoute.useSearch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    
+    if (!otp.trim()) {
+      setError('Please enter the verification code');
+      return;
+    }
+    
     setIsLoading(true);
 
     try {
-      const data = await verifyOtp(email, otp);
+      // Replace this with your actual API call
+      const response = await fetch('/api/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, otp }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to verify OTP');
+      }
+      
       // Login the user with the returned data
       dispatch({ type: 'auth/login', payload: data.user });
       navigate({ to: '/dashboard' });
@@ -29,7 +50,7 @@ const VerifyOtpPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-600 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-center mb-6">Verify Your Email</h1>
         
@@ -40,7 +61,7 @@ const VerifyOtpPage = () => {
         )}
 
         <p className="mb-4 text-center text-gray-600">
-          We've sent a verification code to <strong>{email}</strong>
+          We've sent a verification code to <strong>{email || 'your email'}</strong>
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -54,7 +75,7 @@ const VerifyOtpPage = () => {
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter 4-digit code"
+              placeholder="Enter verification code"
               required
             />
           </div>
