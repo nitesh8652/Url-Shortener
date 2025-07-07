@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useDispatch } from 'react-redux';
 import { OtpRoute } from '../Routing/OtpRoute';
-import { verifyOtp } from '../Api/UserApi';
+import { verifyOtp, registerUser } from '../Api/UserApi';
 import { login } from '../Store/Slice/AuthSlice';
 
 const VerifyOtpPage = () => {
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,6 +54,37 @@ const VerifyOtpPage = () => {
     }
   };
 
+  const handleResendOtp = async () => {
+    setError('');
+    setResendSuccess(false);
+    
+    if (!email) {
+      setError('Email is missing. Please go back to the registration page.');
+      return;
+    }
+    
+    setResendLoading(true);
+    
+    try {
+      // We'll reuse the registerUser function which sends an OTP
+      // You might need to create a dedicated resendOtp function in your API
+      const response = await registerUser('', email, '');
+      console.log('OTP resent successfully:', response);
+      
+      setResendSuccess(true);
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setResendSuccess(false);
+      }, 5000);
+    } catch (err) {
+      console.error('Failed to resend OTP:', err);
+      setError(err.message || 'Failed to resend verification code. Please try again.');
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
@@ -60,6 +93,12 @@ const VerifyOtpPage = () => {
         {error && (
           <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
             {error}
+          </div>
+        )}
+        
+        {resendSuccess && (
+          <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-md">
+            Verification code resent successfully! Please check your email.
           </div>
         )}
 
@@ -86,11 +125,21 @@ const VerifyOtpPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 mb-4"
           >
             {isLoading ? 'Verifying...' : 'Verify Email'}
           </button>
         </form>
+        
+        <div className="text-center">
+          <button
+            onClick={handleResendOtp}
+            disabled={resendLoading}
+            className="text-blue-500 hover:text-blue-700 focus:outline-none text-sm"
+          >
+            {resendLoading ? 'Sending...' : "Didn't receive the code? Resend"}
+          </button>
+        </div>
       </div>
     </div>
   );
