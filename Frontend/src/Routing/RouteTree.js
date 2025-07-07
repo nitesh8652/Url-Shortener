@@ -1,19 +1,19 @@
-import { createRootRoute } from '@tanstack/react-router'
-import RootLayout from '../RootLayout'
-import { OtpRoute } from './OtpRoute'
-import { HomingRoute } from './Homing'
-import { AuthRoute }  from './AuthRoute'
-import { DashboardRoute } from './Dashboard'
-import { QrGenerator } from './Qr'
+import { createRootRoute } from "@tanstack/react-router";
+import RootLayout from "../RootLayout";
+import { HomeRoute } from "./Home";
+import { LoginRoute } from "./Login";
+import { RegisterRoute } from "./Register";
+import { DashboardRoute } from "./Dashboard.jsx";
+import { OtpRoute } from "./OtpRoute";
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
-})
+});
 
 export const routeTree = rootRoute.addChildren([
-  HomingRoute,
-  AuthRoute,
+  HomeRoute,
+  LoginRoute,
+  RegisterRoute,
   DashboardRoute,
-  QrGenerator,
   OtpRoute,
 ])
