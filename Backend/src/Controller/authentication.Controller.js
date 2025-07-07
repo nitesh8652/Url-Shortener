@@ -9,6 +9,8 @@ import User from "../Model/UserModel.js";
 
 export const verifyRegistration = wrapAsync(async (req, res) => {
   const { email, otp } = req.body;
+  
+  console.log("Verifying OTP:", email, otp);
 
   // 1) Validate OTP
   if (!verifyOtp(email, otp)) {
@@ -22,6 +24,10 @@ export const verifyRegistration = wrapAsync(async (req, res) => {
 
   // 3) Fetch the newly verified user
   const user = await User.findOne({ email });
+  
+  if (!user) {
+    return res.status(404).json({ success: false, message: "User not found." });
+  }
 
   // 4) Issue JWT + set cookie with consistent options
   const token = signToken({ id: user._id }); // Use same payload structure as login
