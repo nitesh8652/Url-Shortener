@@ -67,7 +67,6 @@ const VerifyOtpPage = () => {
     
     try {
       // We'll reuse the registerUser function which sends an OTP
-      // You might need to create a dedicated resendOtp function in your API
       const response = await registerUser('', email, '');
       console.log('OTP resent successfully:', response);
       
@@ -86,8 +85,8 @@ const VerifyOtpPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 mb-4">
         <h1 className="text-2xl font-bold text-center mb-6">Verify Your Email</h1>
         
         {error && (
@@ -125,21 +124,22 @@ const VerifyOtpPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 mb-4"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
           >
             {isLoading ? 'Verifying...' : 'Verify Email'}
           </button>
         </form>
-        
-        <div className="text-center">
-          <button
-            onClick={handleResendOtp}
-            disabled={resendLoading}
-            className="text-blue-500 hover:text-blue-700 focus:outline-none text-sm"
-          >
-            {resendLoading ? 'Sending...' : "Didn't receive the code? Resend"}
-          </button>
-        </div>
+      </div>
+      
+      {/* Resend OTP button below the card */}
+      <div className="mt-2">
+        <button
+          onClick={handleResendOtp}
+          disabled={resendLoading}
+          className="px-6 py-2 bg-white text-blue-500 border border-blue-500 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 shadow-sm"
+        >
+          {resendLoading ? 'Sending...' : "Didn't receive the code? Resend OTP"}
+        </button>
       </div>
     </div>
   );
