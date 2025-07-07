@@ -1,5 +1,5 @@
 import { createRoute } from "@tanstack/react-router";
-import OtpVerificationPage from "../Pages/OtpVerificationPage.jsx";
+import OtpVerificationPage from "../Pages/OtpVerificationPage";
 import { rootRoute } from "./RouteTree";
 
 export const OtpRoute = createRoute({
