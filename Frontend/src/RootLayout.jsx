@@ -1,20 +1,13 @@
-import React, { useState } from 'react'
-import Homepage from './Pages/Homepage'
-import AuthenticationPage from './Pages/AuthenticationPage'
+import { useState } from 'react'
 import { Outlet } from '@tanstack/react-router'
 import Navbar from './Components/Navbar'
 
-
-
 const RootLayout = () => {
   return (
-
     <>
-    <Navbar />
+      <Navbar />
       <Outlet />
-    
     </>
-
   )
 }
 
