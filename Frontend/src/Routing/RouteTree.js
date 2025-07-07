@@ -2,10 +2,17 @@ import { createRootRoute, createRoute } from "@tanstack/react-router";
 import RootLayout from "../RootLayout";
 import { HomingRoute } from "./Homing";
 import { AuthRoute } from "./AuthRoute";
-import { DashboardRoute } from "./Dashboard"; // Fixed extension
+import { DashboardRoute } from "./Dashboard"; 
 import { OtpRoute } from "./OtpRoute";
 import { QrGenerator } from "./Qr";
-import {RegisterRoute} from './Register'; // Fixed typo
+import Register from "../Components/Register.jsx";
+
+// Create a route for Register component
+const RegisterRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/register',
+  component: Register
+});
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
