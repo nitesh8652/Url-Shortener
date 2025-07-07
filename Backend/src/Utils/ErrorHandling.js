@@ -1,5 +1,17 @@
 // import {Request , Response , NextFunction} from 'express';
 
+class AppError extends Error {
+    constructor(message, statusCode) {
+        super(message);
+        this.statusCode = statusCode;
+        this.name = this.constructor.name;
+        this.isOperational = true;
+        
+        Error.captureStackTrace(this, this.constructor);
+    }
+}
+
+
 export class AppError extends Error {
     statusCode;
     isoperational;
@@ -45,6 +57,11 @@ export class UnauthorizedError extends AppError {
     }
 }
 
-export const ConflictError = (message = "Conflict") => {
-    return new AppError(message, 409);
-};
+class ConflictError extends AppError {
+    constructor(message = "Conflict") {
+        super(message, 409);
+    }
+}
+
+// Export the classes
+export { AppError, ConflictError };

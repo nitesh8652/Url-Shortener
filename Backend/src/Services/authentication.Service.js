@@ -3,7 +3,7 @@ dotenv.config();
 import User from '../Model/UserModel.js';
 import jwt from 'jsonwebtoken';
 import { createUser, findUserByEmail } from '../Dao/User.Dao.js';
-import { ConflictError } from '../Utils/ErrorHandling.js'; // <-- Ensure this is implemented
+import { ConflictError } from '../Utils/ErrorHandling.js'; 
 import bcrypt from 'bcrypt';
 
 const JWT_SECRET = process.env.JWT_SECRET; 
