@@ -1,3 +1,5 @@
+import { createRootRoute } from '@tanstack/react-router'
+import RootLayout from '../RootLayout'
 import { OtpRoute } from './OtpRoute'
 import { HomingRoute } from './Homing'
 import { AuthRoute }  from './AuthRoute'
