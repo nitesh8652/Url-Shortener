@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useDispatch } from 'react-redux';
 import { OtpRoute } from '../Routing/OtpRoute';
+import { verifyOtp } from '../Api/UserApi';
 
 const VerifyOtpPage = () => {
   const [otp, setOtp] = useState('');
@@ -21,28 +22,27 @@ const VerifyOtpPage = () => {
       return;
     }
     
+    if (!email) {
+      setError('Email is missing. Please go back to the registration page.');
+      return;
+    }
+    
     setIsLoading(true);
 
     try {
-      // Replace this with your actual API call
-      const response = await fetch('/api/verify-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, otp }),
-      });
+      console.log("Submitting OTP:", { email, otp });
+      const data = await verifyOtp(email, otp);
+      console.log("Verification successful:", data);
       
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to verify OTP');
+      if (data && data.user) {
+        // Login the user with the returned data
+        dispatch({ type: 'auth/login', payload: data.user });
+        navigate({ to: '/dashboard' });
+      } else {
+        throw new Error("Invalid response from server");
       }
-      
-      // Login the user with the returned data
-      dispatch({ type: 'auth/login', payload: data.user });
-      navigate({ to: '/dashboard' });
     } catch (err) {
+      console.error("Verification error:", err);
       setError(err.message || 'Invalid or expired OTP. Please try again.');
     } finally {
       setIsLoading(false);
