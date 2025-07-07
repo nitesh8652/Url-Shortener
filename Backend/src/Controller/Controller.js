@@ -22,7 +22,7 @@ const host = req.get('host');            // e.g. "url-shortener-z9f3.onrender.co
   const protocol = req.secure ? 'https' : 'http';
   const base = `${protocol}://${host}`;     // "https://url-shortener-z9f3.onrender.com"
 
-  const fullShortUrl = `${base}/${shortCode}`;  
+  const fullShortUrl = `${base}/${shortUrlCode}`;  
   console.log("Returning short URL:", fullShortUrl);
 
   res.status(200).json({ shortUrl: fullShortUrl });
