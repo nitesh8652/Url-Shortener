@@ -13,17 +13,23 @@ const signToken = (payload) => {
 };
 
 export const registerUser = async (name, email, password) => {
+    // Check if user already exists
     const user = await findUserByEmail(email);
-    if (user) throw new ConflictError("Account already exists with this email!");
+    
+    // If user exists, just return the user (don't throw an error)
+    if (user) {
+        const userObj = user.toObject();
+        delete userObj.password;
+        return { user: userObj };
+    }
+    
+    // Otherwise create a new user
     const newUser = await createUser({ name, email, password });
     const token = signToken({ id: newUser._id });
     
-  const userObj = newUser.toObject();
+    const userObj = newUser.toObject();
     delete userObj.password;
     return { user: userObj, token };
-
-    // return { user: newUser, token };
-    console.log("User registered successfully:", newUser);
 };
 
 export const loginUser = async (email, password) => {

@@ -10,6 +10,28 @@ import User from "../Model/UserModel.js";
 export const register = wrapAsync(async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        
+        // If user exists, treat this as a resend OTP request
+        if (existingUser) {
+            const otpCode = generateOtp(email);
+            
+            await sendmail(
+                email,
+                "Url Shortener Authentication",
+                `Welcome back to URL Shortener! Your new verification code is: ${otpCode}. This code will expire in 5 minutes.`,
+                otpCode
+            );
+            
+            return res.status(200).json({ 
+                success: true, 
+                message: 'New OTP sent to your email' 
+            });
+        }
+        
+        // Otherwise, register new user
         const { user } = await registerUser(name, email, password); // user.verified = false
         const otpCode = generateOtp(email);
 
