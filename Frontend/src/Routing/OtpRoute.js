@@ -4,9 +4,7 @@ import { rootRoute } from "./RouteTree";
 
 export const OtpRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/verify-otp",
+  path: '/verify-otp',
   component: OtpVerificationPage,
-  validateSearch:(search)=>({
-    email:search.email || ""
-,  })
-});
+  validateSearch: (search) => ({ email: search.email || '' }),
+})
