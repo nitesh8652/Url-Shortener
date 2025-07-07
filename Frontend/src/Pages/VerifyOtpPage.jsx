@@ -3,6 +3,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useDispatch } from 'react-redux';
 import { OtpRoute } from '../Routing/OtpRoute';
 import { verifyOtp } from '../Api/UserApi';
+import { login } from '../Store/Slice/AuthSlice';
 
 const VerifyOtpPage = () => {
   const [otp, setOtp] = useState('');
@@ -36,7 +37,9 @@ const VerifyOtpPage = () => {
       
       if (data && data.user) {
         // Login the user with the returned data
-        dispatch({ type: 'auth/login', payload: data.user });
+        dispatch(login(data.user));
+        
+        // Redirect to dashboard
         navigate({ to: '/dashboard' });
       } else {
         throw new Error("Invalid response from server");
