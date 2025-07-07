@@ -1,12 +1,9 @@
 import { createRoute } from "@tanstack/react-router";
-import OtpVerificationPage from "../Pages/OtpVerificationPage.jsx";
+import VerifyOtpPage from "../Pages/VerifyOtpPage";
 import { rootRoute } from "./RouteTree";
 
 export const OtpRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/verify-otp",
-  component: OtpVerificationPage,
-  validateSearch:(search)=>({
-    email:search.email || ""
-,  })
+    getParentRoute: () => rootRoute,
+    path: '/verify-otp',
+    component: VerifyOtpPage
 });
