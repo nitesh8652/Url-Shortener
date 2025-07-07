@@ -2,24 +2,18 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  build: {
-    sourcemap: true,
-    rollupOptions: {
-      onwarn(warning, warn) {
-        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return
-        warn(warning)
-      }
-    }
-  },
+  content: ["./src/**/*.{html,js,jsx}"],
   plugins: [
     react({
-      // Use the new JSX transform
-      jsxRuntime: 'automatic',
+      // Include .js files for JSX processing
       include: "**/*.{jsx,js}",
     }),
-  ]
+  ],
+  esbuild: {
+    // Allow JSX in .js files
+    jsx: 'automatic',
+    jsxInject: `import React from 'react'`,
+  }
 })
-
-
 
 

@@ -1,5 +1,11 @@
 import axiosInstance from '../Utils/Axios';
 
+// Add the missing export for getallurl
+export const getallurl = async () => {
+  const { data } = await axiosInstance.get('/api/user/history');
+  return data;
+};
+
 export const registerUser = async (name, email, password) => {
   const { data } = await axiosInstance.post('/api/authentication/register', {
     name,

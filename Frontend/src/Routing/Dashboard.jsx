@@ -1,18 +1,22 @@
 import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from "./RouteTree";
-import Dashboard from "../Pages/Dashboard";
+import DashboardPage from "../Pages/DashboardPage";
 import { checkAuthentication } from "../Utils/Check";
 
 export const DashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/dashboard',
-  component: Dashboard,
+  component: DashboardPage,
   beforeLoad: async ({ context }) => {
-    const isAuthenticated = await checkAuthentication({ context });
-    if (!isAuthenticated) {
-      throw new Error('You must be logged in to access this page');
+    try {
+      const isAuthenticated = await checkAuthentication({ context });
+      if (!isAuthenticated) {
+        throw new Error('You must be logged in to access this page');
+      }
+      return { isAuthenticated };
+    } catch (error) {
+      throw error;
     }
-    return { isAuthenticated };
   },
   onError: ({ error }) => {
     console.error('Dashboard route error:', error);

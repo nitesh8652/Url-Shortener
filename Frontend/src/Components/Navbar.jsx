@@ -1,4 +1,3 @@
-import React from 'react';
 import { logout } from '../Store/Slice/AuthSlice';
 import { LogoutUser } from '../Api/UserApi';
 import { Link } from '@tanstack/react-router';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { getallurl } from '../Api/UserApi';
 import { useQuery } from '@tanstack/react-query';
 import { ClipboardCopy } from 'lucide-react';

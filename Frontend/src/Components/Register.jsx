@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { RegisterUser } from '../Api/UserApi';
+import { useState } from 'react';
+import { registerUser } from '../Api/UserApi';
 import { useNavigate } from '@tanstack/react-router';
 
 
@@ -27,15 +27,10 @@ const Register = ({ state }) => {
 
     setIsLoading(true);
     try {
-      const data = await RegisterUser(name, email, password);
+      const data = await registerUser(name, email, password);
       console.log('signup successful', data);
 
-    navigate({to: "/verify-otp" , search:{email}})
-      
-
-        // navigate({ to: '/dashboard' });
-     
-
+      navigate({to: "/verify-otp", search:{email}})
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
       console.error('Registration Error:', err);

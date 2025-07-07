@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useDispatch } from 'react-redux';
 import { OtpRoute } from '../Routing/OtpRoute';

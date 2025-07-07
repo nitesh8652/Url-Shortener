@@ -1,4 +1,3 @@
-import React from 'react'
 import Form from '../Components/Form.jsx'
 
 const Homepage = () => {
