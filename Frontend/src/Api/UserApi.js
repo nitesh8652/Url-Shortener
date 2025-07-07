@@ -53,3 +53,17 @@ export const checkAuthStatus = async () => {
   const { data } = await axiosInstance.get("/api/authentication/me", { withCredentials: true });
   return data;
 };
+
+export const resendOtp = async (email) => {
+  try {
+    const { data } = await axiosInstance.post('/api/authentication/resend-otp', { email });
+    return data;
+  } catch (error) {
+    console.error("Resend OTP error:", error);
+    throw {
+      message: error.message || 'Failed to resend OTP. Please try again.',
+      status: error.status,
+      data: error.data,
+    };
+  }
+};

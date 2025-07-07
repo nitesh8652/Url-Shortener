@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useDispatch } from 'react-redux';
 import { OtpRoute } from '../Routing/OtpRoute';
-import { verifyOtp, registerUser } from '../Api/UserApi';
+import { verifyOtp, resendOtp } from '../Api/UserApi';
 import { login } from '../Store/Slice/AuthSlice';
 
 const VerifyOtpPage = () => {
@@ -66,8 +66,8 @@ const VerifyOtpPage = () => {
     setResendLoading(true);
     
     try {
-      // We'll reuse the registerUser function which sends an OTP
-      const response = await registerUser('', email, '');
+      // Use the dedicated resendOtp function
+      const response = await resendOtp(email);
       console.log('OTP resent successfully:', response);
       
       setResendSuccess(true);
