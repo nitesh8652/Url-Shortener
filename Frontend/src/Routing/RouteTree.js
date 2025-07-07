@@ -1,19 +1,21 @@
 import { createRootRoute } from "@tanstack/react-router";
 import RootLayout from "../RootLayout";
-import { HomeRoute } from "./Home";
-import { LoginRoute } from "./Login";
+import { HomingRoute } from "./Homing";
+import { AuthRoute } from "./AuthRoute";
 import { RegisterRoute } from "./Register";
 import { DashboardRoute } from "./Dashboard.jsx";
 import { OtpRoute } from "./OtpRoute";
+import { QrGenerator } from "./Qr";
 
 export const rootRoute = createRootRoute({
   component: RootLayout,
 });
 
 export const routeTree = rootRoute.addChildren([
-  HomeRoute,
-  LoginRoute,
+  HomingRoute,
+  AuthRoute,
   RegisterRoute,
   DashboardRoute,
   OtpRoute,
+  QrGenerator,
 ])
