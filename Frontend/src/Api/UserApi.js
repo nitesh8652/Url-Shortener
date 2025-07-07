@@ -39,7 +39,7 @@ export const LogoutUser = async () => {
 };
 
 export const checkAuthStatus = async () => {
-    const {data} = await axiosInstance.get("/api/authentication/origin" ,{ withCredentials: true });
+    const {data} = await axiosInstance.get("/api/authentication/me", { withCredentials: true });
     return data;
 };
 
