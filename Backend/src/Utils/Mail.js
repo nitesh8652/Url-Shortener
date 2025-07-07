@@ -32,8 +32,8 @@ export async function sendmail(to, subject, text, otp) {
     html: `
       <h2>Your OTP Code</h2>
       <p>Your OTP code is: <strong>${otp}</strong></p>
-      <p>This code will expire in 10 minutes.</p>
-    `                      // html body (optional)
+      <p>This code will expire in 5 minutes.</p>
+    `                      // html body
   };
 
   const info = await transporter.sendMail(mailOptions);
