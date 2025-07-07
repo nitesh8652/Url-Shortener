@@ -42,9 +42,9 @@ export const verifyOtp = async (email, otp) => {
   } catch (error) {
     console.error("OTP verification error:", error);
     throw {
-      message: error.message || 'Failed to verify OTP. Please try again.',
-      status: error.status,
-      data: error.data,
+      message: error.response?.data?.message || 'Failed to verify OTP. Please try again.',
+      status: error.response?.status,
+      data: error.response?.data,
     };
   }
 };

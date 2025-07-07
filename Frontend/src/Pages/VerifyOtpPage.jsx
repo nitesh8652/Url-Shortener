@@ -35,7 +35,7 @@ const VerifyOtpPage = () => {
     try {
       console.log("Submitting OTP:", { email, otp });
       const data = await verifyOtp(email, otp);
-      console.log("Verification successful:", data);
+      console.log("Verification response:", data);
       
       if (data && data.user) {
         // Login the user with the returned data
