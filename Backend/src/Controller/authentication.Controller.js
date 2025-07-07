@@ -131,3 +131,48 @@ export const verifyRegistration = wrapAsync(async (req, res) => {
     });
   }
 });
+
+export const resendOtp = wrapAsync(async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Email is required." 
+      });
+    }
+    
+    // Check if user exists
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "User not found with this email." 
+      });
+    }
+    
+    // Generate new OTP
+    const otpCode = generateOtp(email);
+    
+    // Send email with OTP
+    await sendmail(
+      email,
+      "URL Shortener - New Verification Code",
+      `Your new verification code is: ${otpCode}. This code will expire in 5 minutes.`,
+      otpCode
+    );
+    
+    res.status(200).json({ 
+      success: true, 
+      message: "New verification code sent to your email." 
+    });
+  } catch (err) {
+    console.error("Resend OTP Error:", err);
+    res.status(500).json({ 
+      success: false, 
+      message: "Failed to resend verification code." 
+    });
+  }
+});
