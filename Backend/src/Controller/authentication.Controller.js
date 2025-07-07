@@ -10,43 +10,66 @@ import User from "../Model/UserModel.js";
 export const verifyRegistration = wrapAsync(async (req, res) => {
   const { email, otp } = req.body;
   
-  console.log("Verifying OTP:", email, otp);
+  console.log("Verifying OTP request received:", { email, otp });
+
+  if (!email || !otp) {
+    console.log("Missing email or OTP in request");
+    return res.status(400).json({ 
+      success: false, 
+      message: "Email and OTP are required." 
+    });
+  }
 
   // 1) Validate OTP
-  if (!verifyOtp(email, otp)) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Invalid or expired OTP." });
+  const isValid = verifyOtp(email, otp);
+  console.log("OTP validation result:", isValid);
+  
+  if (!isValid) {
+    console.log("Invalid or expired OTP");
+    return res.status(400).json({ 
+      success: false, 
+      message: "Invalid or expired OTP." 
+    });
   }
 
-  // 2) Mark user as verified
-  await User.updateOne({ email }, { $set: { verified: true } });
+  try {
+    // 2) Mark user as verified
+    const updateResult = await User.updateOne({ email }, { $set: { verified: true } });
+    console.log("User update result:", updateResult);
 
-  // 3) Fetch the newly verified user
-  const user = await User.findOne({ email });
-  
-  if (!user) {
-    return res.status(404).json({ success: false, message: "User not found." });
+    // 3) Fetch the newly verified user
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      console.log("User not found after verification");
+      return res.status(404).json({ 
+        success: false, 
+        message: "User not found." 
+      });
+    }
+
+    // 4) Issue JWT + set cookie
+    const token = signToken({ id: user._id });
+    res.cookie("accessToken", token, cookieOptions);
+    console.log('Setting cookie:', token);
+
+    // 5) Return success + user (without password)
+    const userObj = user.toObject();
+    delete userObj.password;
+    
+    console.log("Sending successful verification response");
+    return res.status(200).json({
+      success: true,
+      message: "Email verified! You are now logged in.",
+      user: userObj
+    });
+  } catch (error) {
+    console.error("Error during verification process:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error during verification process."
+    });
   }
-
-  // 4) Issue JWT + set cookie with consistent options
-  const token = signToken({ id: user._id }); // Use same payload structure as login
-  
-  // Use the same cookie options as other functions
-  res.cookie("accessToken", token, cookieOptions);
-
-  console.log('Setting cookie in verifyRegistration:', 'accessToken', token);
-  console.log('Cookie options used:', cookieOptions);
-
-  // 5) Return success + user (without password)
-  const userObj = user.toObject();
-  delete userObj.password;
-  
-  return res.json({
-    success: true,
-    message: "Email verified! You are now logged in.",
-    user: userObj
-  });
 });
 
 export const register = wrapAsync(async (req, res) => {
