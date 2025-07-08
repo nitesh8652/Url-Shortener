@@ -37,14 +37,14 @@ const VerifyOtpPage = () => {
       const data = await verifyOtp(email, otp);
       console.log("Verification response:", data);
       
-      if (data && data.user) {
+      if (data && data.success && data.user) {
         // Login the user with the returned data
         dispatch(login(data.user));
         
         // Redirect to dashboard
         navigate({ to: '/dashboard' });
       } else {
-        throw new Error("Invalid response from server");
+        throw new Error(data?.message || "Invalid response from server");
       }
     } catch (err) {
       console.error("Verification error:", err);
