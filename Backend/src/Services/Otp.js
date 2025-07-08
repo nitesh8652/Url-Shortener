@@ -36,9 +36,16 @@ export function verifyOtp(email, candidate) {
     console.log("Is expired:", Date.now() > expire);
     console.log("OTP match:", otp === candidate);
 
-    if (Date.now() > expire || otp !== candidate) {
-        console.log("OTP invalid or expired, deleting record");
+    // Check if OTP has expired
+    if (Date.now() > expire) {
+        console.log("OTP expired, deleting record");
         otpStore.delete(email);
+        return false;
+    }
+    
+    // Check if OTP matches
+    if (otp !== candidate) {
+        console.log("OTP invalid, but keeping record for retry");
         return false;
     }
 
