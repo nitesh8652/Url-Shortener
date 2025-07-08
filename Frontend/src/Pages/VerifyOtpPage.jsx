@@ -33,8 +33,8 @@ const VerifyOtpPage = () => {
     setIsLoading(true);
 
     try {
-      console.log("Submitting OTP:", { email, otp });
-      const data = await verifyOtp(email, otp);
+      console.log("Submitting OTP:", { email, otp: otp.trim() });
+      const data = await verifyOtp(email, otp.trim());
       console.log("Verification response:", data);
       
       if (data && data.success && data.user) {
@@ -49,6 +49,9 @@ const VerifyOtpPage = () => {
     } catch (err) {
       console.error("Verification error:", err);
       setError(err.message || 'Invalid or expired OTP. Please try again.');
+      
+      // Clear the OTP input field to allow the user to try again
+      setOtp('');
     } finally {
       setIsLoading(false);
     }

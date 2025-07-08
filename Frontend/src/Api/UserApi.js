@@ -41,10 +41,12 @@ export const verifyOtp = async (email, otp) => {
     return response.data;
   } catch (error) {
     console.error("OTP verification error:", error);
+    console.error("Error response:", error.response);
     throw {
       message: error.response?.data?.message || 'Failed to verify OTP. Please try again.',
       status: error.response?.status,
       data: error.response?.data,
+      originalError: error
     };
   }
 };
